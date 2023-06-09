@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
 import { UpdateblogData, blogData } from "../utils/Interfaces"
-import BlogModel, { Blog } from "../models/blogmodel"
+import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
 
 export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request,res:Response)=>{
@@ -75,7 +75,7 @@ export const getAllBlog:RequestHandler=asyncHandler(async(req:Request,res:Respon
     try {
         
 
-        let blogs=await BlogModel.find({})
+        let blogs=await BlogModel.find<Blogs>({}).exec()
         if(!blogs){
             throw new Error('blog not found')
         }
@@ -92,7 +92,7 @@ export const deleteBlog:RequestHandler=asyncHandler(async(req:Request,res:Respon
     try {
         const id=req.params.id
         validateMongodbId(id)
-        const blog=await BlogModel.findById(id)
+        const blog=await BlogModel.findById(id).exec()
         if(!blog){
             throw new Error("blog not found")
         }    
@@ -114,7 +114,7 @@ export const updateBlog:RequestHandler<any,any,UpdateblogData,any>=asyncHandler(
         if(!blog){
             throw new Error('blog not found')
         }
-        let updatedBlog=await BlogModel.findByIdAndUpdate(id,req.body,{new:true})
+        let updatedBlog=await BlogModel.findByIdAndUpdate<Blog>(id,req.body,{new:true})
         res.status(200).json({
             sucess:true,
             updatedBlog
