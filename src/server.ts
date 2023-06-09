@@ -3,19 +3,21 @@ import 'dotenv/config'
 import env from './utils/validateEnv'
 import connectDb from './config/connectDb'
 import { errorHandler, notFound } from './middlewares/errorHandler'
+import blogRoute from './routes/blogRoute'
 
-// rest cariables
+// rest variables
 const app=express() 
 const PORT=env.PORT
+
 // connecting to the database
 connectDb()
 
+
 // all the middlewares
+app.use(express.json())
 
 // all the routes
-app.get('/',(req,res)=>{
-    throw new Error("wow this is good")
-})
+app.use('/api/v1',blogRoute)
 
 app.use(notFound)
 app.use(errorHandler)
