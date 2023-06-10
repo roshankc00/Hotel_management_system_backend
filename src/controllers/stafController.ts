@@ -11,9 +11,9 @@ export const createStaf:RequestHandler<any,any,stafData,any>=asyncHandler(async(
             throw new Error("all the fields are necesssary")
         }
          const chectStaf=await StafModel.find({email})
-        //  if (chectStaf){
-        //     throw new Error("this user already exists")
-        //  }
+         if (chectStaf){
+            throw new Error("this user already exists")
+         }
 
             const staf=await StafModel.create({
                 name,
@@ -117,9 +117,30 @@ export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request,re
             sucess:true,
             staf
         })
-
-
+    } catch (error:any) {
+        throw new Error(error)
         
+    }
+})
+// promote the staf 
+export const promoteStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+    try {
+        const position:string=req.body.position
+        if(position.length<=3){
+            throw new Error("enter the valid achievement")
+        }
+        const id:string =req.params.id
+        validateMongodbId(id);
+        const staf=await StafModel.findById(id)
+        if(!staf){
+            throw new Error("user not found")
+        }
+        staf.position=position
+        await staf.save()
+        res.status(200).json({
+            sucess:true,
+            staf
+        })
     } catch (error:any) {
         throw new Error(error)
         
