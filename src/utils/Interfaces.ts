@@ -1,6 +1,18 @@
- export type ParamId=string
- 
+import { Blog } from "../models/blogmodel"
+import { Testinomial } from '../models/testinomialmodel';
 
+ export interface ParamId {
+    id:string
+ }
+  
+export interface resMe {
+    sucess:boolean,
+    message:string
+}
+export interface resBlog {
+    sucess:boolean,
+    blog:Blog
+}
 
 
 
@@ -14,6 +26,30 @@ export interface blogData  {
         public_id:string
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 export interface UpdateblogData  {
     title?:string,
@@ -51,4 +87,17 @@ export interface testinomialData {
     }
 
 }
+export interface testinomialUpdateData {
+    name?:string,
+    description?:string,
+}
+export interface testinomialgetData {
+    sucess:boolean,
+    testinomoial:Testinomial
+}
+export interface testinomialgetAllData {
+    sucess:boolean,
+    testinomials:Array<Testinomial>
+}
+
 

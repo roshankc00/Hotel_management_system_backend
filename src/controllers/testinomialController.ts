@@ -1,12 +1,13 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { ParamId, UpdateblogData, blogData, testinomialData } from "../utils/Interfaces"
+import { ParamId, UpdateblogData, blogData, resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData } from "../utils/Interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import TestinomialModel, { Testinomial } from "../models/testinomialmodel"
 
+
 // create testinomial 
-export const createTestinomial:RequestHandler<any,any,testinomialData,any>= asyncHandler(async(req:Request,res:Response)=>{
+export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<any,any,testinomialData>,res:Response<resMe>)=>{
     try {
         const {name,description}=req.body
         if(!name || !description){
@@ -22,7 +23,7 @@ export const createTestinomial:RequestHandler<any,any,testinomialData,any>= asyn
             })
             res.status(200).json({
                 sucess:false,
-                testinomial
+                message:"testinomial created"
                 
             })
         }
@@ -33,13 +34,12 @@ export const createTestinomial:RequestHandler<any,any,testinomialData,any>= asyn
     
 })
 
-
+  
 // get a single testinomial 
-export const getASingleTestinomial:RequestHandler=asyncHandler(async(req:Request,res:any)=>{
+export const getASingleTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId>,res:Response<testinomialgetData>)=>{
        try {
-        const id:ParamId=req.params.id
+        const {id}=req.params
         validateMongodbId(id)  
-
         const testinomoial=await TestinomialModel.findById(id)
         if(!testinomoial){
             throw new Error("testinommial doesnt exists")
@@ -55,9 +55,10 @@ export const getASingleTestinomial:RequestHandler=asyncHandler(async(req:Request
        }
 
 })
-export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request,res:any)=>{
+// update the testinomial
+export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId,any,testinomialUpdateData>,res:Response<resMe>)=>{
        try {
-        const id:ParamId=req.params.id
+        const id=req.params.id
         validateMongodbId(id)  
         const checkTest=await TestinomialModel.findById(id)
         if(!checkTest){
@@ -69,7 +70,7 @@ export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request,res
         }
         res.status(200).json({
             sucess:true,
-            updatedTestinomial
+            message:"testinomial updated sucessfully"
         })
         
     } catch (error:any) {
@@ -78,7 +79,9 @@ export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request,res
        }
 
 })
-export const getAllTestinomial:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+
+// get all the testinomials
+export const getAllTestinomial:RequestHandler=asyncHandler(async(req:Request,res:Response<testinomialgetAllData>)=>{
     try {
         const testinomials=await TestinomialModel.find({})
         if(!testinomials){
@@ -94,9 +97,12 @@ export const getAllTestinomial:RequestHandler=asyncHandler(async(req:Request,res
         
     }
 })
-export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request,res:any)=>{
+
+// delete the testinomial
+
+export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId>,res:Response<resMe>)=>{
        try {
-        const id:ParamId=req.params.id
+        const id=req.params.id
         validateMongodbId(id)  
         const checkTest=await TestinomialModel.findById(id)
         if(!checkTest){

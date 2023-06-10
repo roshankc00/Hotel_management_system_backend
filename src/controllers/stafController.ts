@@ -1,6 +1,6 @@
 import asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from 'express'
-import { stafData } from '../utils/Interfaces'
+import { resMe, stafData } from '../utils/Interfaces'
 import StafModel from '../models/stafmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
 
@@ -25,7 +25,7 @@ export const createStaf:RequestHandler<any,any,stafData,any>=asyncHandler(async(
             })
             res.status(200).json({
                 sucess:true,
-                staf
+                message:"user created sucessfully"
             })
         
         
