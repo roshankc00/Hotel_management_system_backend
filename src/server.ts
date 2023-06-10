@@ -5,6 +5,7 @@ import connectDb from './config/connectDb'
 import { errorHandler, notFound } from './middlewares/errorHandler'
 import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
+import testinomialRoute from './routes/testinomiaRoute'
 
 // rest variables
 const app=express() 
@@ -20,6 +21,7 @@ app.use(express.json())
 // all the routes
 app.use('/api/v1',blogRoute)
 app.use('/api/v1',stafRoute)
+app.use('/api/v1',testinomialRoute)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -1,3 +1,10 @@
+ export type ParamId=string
+ 
+
+
+
+
+// blog data
 export interface blogData  {
     title:string,
     description:string,
@@ -31,4 +38,17 @@ export interface stafData {
     phoneNumber:number,
     }
 
+
+
+
+// testinomial interface 
+export interface testinomialData {
+    name:string,
+    description:string,
+    image?:{
+        url:string,
+        public_id:string
+    }
+
+}
 
