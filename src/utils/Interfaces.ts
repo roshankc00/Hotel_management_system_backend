@@ -19,4 +19,16 @@ export interface UpdateblogData  {
 }
 
 
+// staf interfaces 
+export interface stafData {
+    name:String,
+    address:string,
+    position:string,
+    age:number,
+    salary:number,
+    email:string,
+    achievement?:Array<string>
+    phoneNumber:number,
+    }
+
 
