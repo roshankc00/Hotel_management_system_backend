@@ -6,6 +6,7 @@ import { errorHandler, notFound } from './middlewares/errorHandler'
 import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
+import userRoute from './routes/userRoute'
 
 // rest variables
 const app=express() 
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use('/api/v1',blogRoute)
 app.use('/api/v1',stafRoute)
 app.use('/api/v1',testinomialRoute)
+app.use('/api/v1',userRoute)
 
 app.use(notFound)
 app.use(errorHandler)

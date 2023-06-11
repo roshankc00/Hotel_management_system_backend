@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Blog, Blogs } from "../models/blogmodel"
 import { Staf } from "../models/stafmodel";
 import { Testinomial } from '../models/testinomialmodel';
@@ -120,3 +121,9 @@ export interface testinomialgetAllData {
 }
 
 
+
+
+// usser 
+export interface tokendata {
+    id:mongoose.Schema.Types.ObjectId
+}
