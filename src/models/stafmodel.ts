@@ -28,8 +28,7 @@ const stafSchema=new mongoose.Schema({
     },
     age:{
         type:Number,
-
-    },
+        },
     acheiveaments:[{
         type:String
         }],

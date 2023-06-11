@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { UpdateblogData, blogData } from "../utils/Interfaces"
+import { UpdateblogData, blogData, resBlog } from "../utils/Interfaces"
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
 
@@ -19,6 +19,7 @@ export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async
                     url:"String",
                     public_id:"String"
                 }
+                // this
             })
          res.status(200).json({
             sucess:false,
@@ -46,7 +47,7 @@ export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async
 
 
 // get a single blog
-export const getSingleBlog:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const getSingleBlog:RequestHandler=asyncHandler(async(req:Request,res:resBlog)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
