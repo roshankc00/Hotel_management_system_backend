@@ -1,20 +1,21 @@
-import { Blog } from "../models/blogmodel"
+import { Blog, Blogs } from "../models/blogmodel"
+import { Staf } from "../models/stafmodel";
 import { Testinomial } from '../models/testinomialmodel';
 
+// for all the endpoints 
  export interface ParamId {
-    id:string
+    id:any
  }
   
 export interface resMe {
     sucess:boolean,
     message:string
 }
-export interface resBlog {
-    sucess:boolean,
-    blog:Blog
-}
 
 
+
+
+// blog 
 
 // blog data
 export interface blogData  {
@@ -27,29 +28,19 @@ export interface blogData  {
     }
 }
 
+// get a blog 
+export interface getBlog {
+    sucess:boolean,
+    blog:Blog
+}
+
+// get All the blogs 
+export interface AllBlog{
+    sucess:boolean,
+    blogs:Blogs
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 
 export interface UpdateblogData  {
     title?:string,
@@ -60,6 +51,14 @@ export interface UpdateblogData  {
         public_id:string
     }
 }
+
+
+
+
+
+
+
+
 
 
 // staf interfaces 
@@ -75,7 +74,27 @@ export interface stafData {
     }
 
 
+    export interface promote {
+        position:string
+    }
+    export interface achievement {
+        achievement:string
+    }
 
+
+export interface getStaf {
+    sucess:boolean,
+    staf:Staf
+}
+
+export interface param {
+    id:string
+}
+
+export interface allstaf{
+    sucess:boolean,
+    stafs:Array<Staf>
+}
 
 // testinomial interface 
 export interface testinomialData {

@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { UpdateblogData, blogData, resBlog } from "../utils/Interfaces"
+import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe } from "../utils/Interfaces"
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
 
-export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request,res:Response)=>{
+export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request<any,any,blogData>,res:Response<resMe>)=>{
     try {
         const {title,description,tag}=req.body
         if(!title || !description || !tag){
@@ -23,7 +23,7 @@ export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async
             })
          res.status(200).json({
             sucess:false,
-            blog
+            message:"blog has been created"
 
          })
         }
@@ -41,15 +41,10 @@ export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async
 
 
 
-
-
-
-
-
 // get a single blog
-export const getSingleBlog:RequestHandler=asyncHandler(async(req:Request,res:resBlog)=>{
+export const getSingleBlog:RequestHandler=asyncHandler(async(req:Request<ParamId>,res:Response<getBlog>)=>{
     try {
-        const id=req.params.id
+        const {id}=req.params
         validateMongodbId(id)
 
         let blog=await BlogModel.findById(id)
@@ -89,7 +84,8 @@ export const getAllBlog:RequestHandler=asyncHandler(async(req:Request,res:Respon
         
     }
 })
-export const deleteBlog:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+// delete blog 
+export const deleteBlog:RequestHandler=asyncHandler(async(req:Request<ParamId>,res:Response<resMe>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -107,7 +103,7 @@ export const deleteBlog:RequestHandler=asyncHandler(async(req:Request,res:Respon
         
     }
 })
-export const updateBlog:RequestHandler<any,any,UpdateblogData,any>=asyncHandler(async(req:Request,res:Response)=>{
+export const updateBlog:RequestHandler=asyncHandler(async(req:Request<ParamId,any,UpdateblogData>,res:Response)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)

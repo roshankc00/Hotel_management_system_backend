@@ -1,16 +1,16 @@
 import asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from 'express'
-import { resMe, stafData } from '../utils/Interfaces'
+import { ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../utils/Interfaces'
 import StafModel from '../models/stafmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
 
-export const createStaf:RequestHandler<any,any,stafData,any>=asyncHandler(async(req:Request,res:Response)=>{
+export const createStaf:RequestHandler=asyncHandler(async(req:Request<any,any,stafData,any>,res:Response<resMe>)=>{
     try {
-        const {name,address,position,salary,email,phoneNumber}:stafData=req.body
+        const {name,address,position,salary,email,phoneNumber}=req.body
         if(!name || !address || !position || !salary || !email ||!phoneNumber){
             throw new Error("all the fields are necesssary")
         }
-         const chectStaf=await StafModel.find({email})
+         const chectStaf=await StafModel.findOne({email})
          if (chectStaf){
             throw new Error("this user already exists")
          }
@@ -35,9 +35,11 @@ export const createStaf:RequestHandler<any,any,stafData,any>=asyncHandler(async(
     }
 })
 
-export const getSingleStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+// get a single staf 
+
+export const getSingleStaf:RequestHandler=asyncHandler(async(req:Request,res:Response<getStaf>)=>{
     try {
-        const id:string =req.params.id
+        const {id}=req.params
         validateMongodbId(id);
         const staf=await StafModel.findById(id)
         if(!staf){
@@ -53,7 +55,7 @@ export const getSingleStaf:RequestHandler=asyncHandler(async(req:Request,res:Res
         
     }
 })
-export const getAllStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const getAllStaf:RequestHandler=asyncHandler(async(req:Request,res:Response<allstaf>)=>{
     try {
         const stafs=await StafModel.find({})
         res.status(200).json({
@@ -70,7 +72,15 @@ export const updateStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
     try {
         const id:string=req.params.id
         validateMongodbId(id)
-        
+        const checkstaf=await StafModel.findById(id)
+        if(!checkstaf){
+            throw new Error("no staf exists")
+        }
+        const staf=await StafModel.findByIdAndUpdate(id,req.body,{new:true})
+        res.status(200).json({
+            staf
+
+        })
     } catch (error:any) {
         throw new Error(error)
         
@@ -78,7 +88,7 @@ export const updateStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
 })
 
 // delete the staf 
-export const deleteStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const deleteStaf:RequestHandler=asyncHandler(async(req:Request,res:Response<resMe>)=>{
     try {
         const id:string=req.params.id
         validateMongodbId(id)
@@ -98,9 +108,10 @@ export const deleteStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
 
 
 // add the staf achievement 
-export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request<any,any,achievement,any>,res:Response)=>{
+    console.log("memememe")
     try {
-        const achievement:string=req.body.achievement
+        const achievement=req.body.achievement
         if(achievement.length<=5){
             throw new Error("enter the valid achievement")
         }
@@ -111,8 +122,10 @@ export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request,re
         if(!staf){
             throw new Error("user not found")
         }
+        console.log("wow")
         staf.acheiveaments.push(achievement)
         await staf.save()
+        console.log(staf)
         res.status(200).json({
             sucess:true,
             staf
@@ -123,9 +136,9 @@ export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request,re
     }
 })
 // promote the staf 
-export const promoteStaf:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const promoteStaf:RequestHandler=asyncHandler(async(req:Request<any,any,promote>,res:Response<resMe>)=>{
     try {
-        const position:string=req.body.position
+        const position=req.body.position
         if(position.length<=3){
             throw new Error("enter the valid achievement")
         }
@@ -139,7 +152,7 @@ export const promoteStaf:RequestHandler=asyncHandler(async(req:Request,res:Respo
         await staf.save()
         res.status(200).json({
             sucess:true,
-            staf
+            message:"staf has been promoted"
         })
     } catch (error:any) {
         throw new Error(error)

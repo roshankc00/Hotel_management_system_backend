@@ -39,7 +39,6 @@ const stafSchema=new mongoose.Schema({
 },{timestamps:true})
 
 export type Staf=InferSchemaType<typeof stafSchema>
-export type Stafs=Array<Staf>
 
 
 const StafModel=mongoose.model("Staf",stafSchema)
