@@ -76,7 +76,7 @@ export const updateStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
         if(!checkstaf){
             throw new Error("no staf exists")
         }
-        const staf=await StafModel.findByIdAndUpdate(id,req.body,{new:true})
+        const staf=await StafModel.findById(id,req.body,{new:true})
         res.status(200).json({
             staf
 
@@ -109,7 +109,6 @@ export const deleteStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
 
 // add the staf achievement 
 export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request<any,any,achievement,any>,res:Response)=>{
-    console.log("memememe")
     try {
         const achievement=req.body.achievement
         if(achievement.length<=5){

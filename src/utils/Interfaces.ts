@@ -95,6 +95,24 @@ export interface param {
 export interface allstaf{
     sucess:boolean,
     stafs:Array<Staf>
+
+}
+
+
+
+export interface stafInput {
+    name:string,
+    address:string,
+    position:string,
+    salary:number,
+    email:string,
+    age:number,
+    phoneNumber:number,
+    achievement:Array<string>
+}
+export interface stafDocument extends stafInput, mongoose.Document{
+    createdAt:Date,
+    updatedAt:Date,
 }
 
 // testinomial interface 
@@ -124,6 +142,17 @@ export interface testinomialgetAllData {
 
 
 // usser 
+export interface UserInput {
+    email:string,
+    password:string,
+    name:string,
+    role:string,    
+}
+export interface UserDocument extends UserInput, mongoose.Document{
+    creaetedAt:Date,
+    updatedAt:Date,
+    comparePassword(password:string):Promise<boolean>;
+}
 export interface tokendata {
     id:mongoose.Schema.Types.ObjectId
 }

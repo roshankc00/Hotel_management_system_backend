@@ -3,18 +3,9 @@ import mongoose,{InferSchemaType} from "mongoose";
 import pkg from 'validator'
 const {isEmail}=pkg
 import bcrypt from 'bcryptjs'
+import { UserDocument, UserInput } from "../utils/Interfaces";
 
-export interface UserInput {
-    email:string,
-    password:string,
-    name:string,
-    role:string,    
-}
-export interface UserDocument extends UserInput, mongoose.Document{
-    creaetedAt:Date,
-    updatedAt:Date,
-    comparePassword(password:string):Promise<boolean>;
-}
+
 
 const userSchema=new mongoose.Schema<UserInput>({
     name:{

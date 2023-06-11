@@ -1,6 +1,9 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import pkg  from 'validator'
+import { stafData, stafDocument } from '../utils/Interfaces';
 const {isEmail}=pkg
+
+
 const stafSchema=new mongoose.Schema({
     name:{
         type:String,
