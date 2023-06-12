@@ -1,6 +1,6 @@
 import asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from 'express'
-import { ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../utils/Interfaces'
+import { CustomRequest, ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../utils/Interfaces'
 import StafModel from '../models/stafmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
 
@@ -55,7 +55,7 @@ export const getSingleStaf:RequestHandler=asyncHandler(async(req:Request,res:Res
         
     }
 })
-export const getAllStaf:RequestHandler=asyncHandler(async(req:Request,res:Response<allstaf>)=>{
+export const getAllStaf:RequestHandler=asyncHandler(async(req:CustomRequest,res:Response<allstaf>)=>{
     try {
         const stafs=await StafModel.find({})
         res.status(200).json({

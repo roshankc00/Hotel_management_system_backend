@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Blog, Blogs } from "../models/blogmodel"
 import { Staf } from "../models/stafmodel";
 import { Testinomial } from '../models/testinomialmodel';
+import { Request } from "express";
 
 // for all the endpoints 
  export interface ParamId {
@@ -159,6 +160,9 @@ export interface testinomialgetAllData {
 
 
 // -----------------------------------user -------------------------------------
+export interface CustomRequest extends Request {
+    user?:UserDocument; 
+  }
 export interface UserInput {
     email:string,
     password:string,
