@@ -16,9 +16,26 @@ export interface resMe {
 
 
 
-// blog 
+
+
+
+// ---------------------------------blog -------------------
 
 // blog data
+export interface blogInput{
+    tag:string,
+    description:string,
+    title:string,
+    image?:{
+        url:string,
+        public_id:string
+    }
+
+}
+export interface blogDocument extends blogInput, mongoose.Document{
+    creaetedAt:Date,
+    updatedAt:Date,
+}
 export interface blogData  {
     title:string,
     description:string,
@@ -62,7 +79,7 @@ export interface UpdateblogData  {
 
 
 
-// staf interfaces 
+//---------------------- staf interfaces -------------------
 export interface stafData {
     name:String,
     address:string,
@@ -115,7 +132,7 @@ export interface stafDocument extends stafInput, mongoose.Document{
     updatedAt:Date,
 }
 
-// testinomial interface 
+//--------------------- testinomial interface -----------------
 export interface testinomialData {
     name:string,
     description:string,
@@ -141,13 +158,27 @@ export interface testinomialgetAllData {
 
 
 
-// usser 
+// -----------------------------------user -------------------------------------
 export interface UserInput {
     email:string,
     password:string,
     name:string,
     role:string,    
 }
+export interface createUser {
+    email:string,
+    password:string,
+    name:string,
+}
+export interface loginuser {
+    email:string,
+    password:string
+}
+export interface userres{
+    sucess:boolean,
+    token:string
+}
+
 export interface UserDocument extends UserInput, mongoose.Document{
     creaetedAt:Date,
     updatedAt:Date,

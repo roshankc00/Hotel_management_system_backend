@@ -1,5 +1,11 @@
 import mongoose,{InferSchemaType} from "mongoose";
-const blogSchema=new mongoose.Schema({
+import { blogDocument, blogInput } from "../utils/Interfaces";
+
+
+
+
+
+const blogSchema=new mongoose.Schema<blogInput>({
     tag:{
         type:String,
         required:true,
@@ -26,5 +32,5 @@ const blogSchema=new mongoose.Schema({
 export type Blog=InferSchemaType<typeof blogSchema>
 export type Blogs=Array<Blog>
 
-const BlogModel=mongoose.model('Blog',blogSchema)
+const BlogModel=mongoose.model<blogDocument>('Blog',blogSchema)
 export default BlogModel

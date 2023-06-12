@@ -3,10 +3,10 @@ import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import env from '../utils/validateEnv'
-import { tokendata } from "../utils/Interfaces"
+import { tokendata, createUser, userres, loginuser } from '../utils/Interfaces';
 
 // register the user 
-export const registerUser:RequestHandler=asyncHandler(async(req:Request,res:Response)=>{
+export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
     try {
         const {email,password,name}=req.body
         const existingUser=await UserModel.findOne({email})
@@ -36,7 +36,7 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request,res:Resp
 
 // login the user 
 
-export const loginUser=asyncHandler(async(req:Request,res:Response)=>{
+export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response<userres>)=>{
     try {
         const {email,password}=req.body
         const existUser=await UserModel.findOne({email})
