@@ -7,6 +7,7 @@ import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
+import { createUserSchema } from './validations/user.schema'
 
 // rest variables
 const app=express() 
@@ -20,6 +21,8 @@ connectDb()
 app.use(express.json())
 
 // all the routes
+
+
 app.use('/api/v1',blogRoute)
 app.use('/api/v1',stafRoute)
 app.use('/api/v1',testinomialRoute)
@@ -29,6 +32,8 @@ app.use(notFound)
 app.use(errorHandler)
 
 app.listen(PORT,()=>{
+  
+ 
     console.log(`running at the ${PORT}`)
-
+    
 })

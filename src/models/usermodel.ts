@@ -1,10 +1,10 @@
 import { NextFunction } from "express";
+import {z} from 'zod'
 import mongoose,{InferSchemaType} from "mongoose";
 import pkg from 'validator'
 const {isEmail}=pkg
 import bcrypt from 'bcryptjs'
-import { UserDocument, UserInput } from "../utils/Interfaces";
-
+import { UserDocument, UserInput } from "../validations/user.schema";
 
 
 const userSchema=new mongoose.Schema<UserInput>({

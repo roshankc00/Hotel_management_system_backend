@@ -163,6 +163,18 @@ export interface testinomialgetAllData {
 export interface CustomRequest extends Request {
     user?:UserDocument; 
   }
+  export interface UserInput {
+    email:string,
+    password:string,
+    name:string,
+    role:string,    
+}
+export interface UserDocument extends UserInput, mongoose.Document{
+    creaetedAt:Date,
+    updatedAt:Date,
+    comparePassword(password:string):Promise<boolean>;
+}
+
 export interface UserInput {
     email:string,
     password:string,
@@ -183,11 +195,7 @@ export interface userres{
     token:string
 }
 
-export interface UserDocument extends UserInput, mongoose.Document{
-    creaetedAt:Date,
-    updatedAt:Date,
-    comparePassword(password:string):Promise<boolean>;
-}
+
 export interface tokendata {
     id:mongoose.Schema.Types.ObjectId
 }

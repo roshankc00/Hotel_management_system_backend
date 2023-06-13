@@ -3,12 +3,19 @@ import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser } from '../utils/Interfaces';
+import { tokendata, createUser, userres, loginuser } from '../validations/user.schema';
+import { createUserSchema } from "../validations/user.schema"
 
 // register the user 
 export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
     try {
         const {email,password,name}=req.body
+        // zod validation 
+        let  result=createUserSchema.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+       
+
+      
         const existingUser=await UserModel.findOne({email})
         if(existingUser){
             throw new Error("user already exists")
@@ -62,3 +69,18 @@ export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Res
         throw new Error(error)
     }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
