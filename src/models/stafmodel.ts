@@ -1,6 +1,5 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import pkg  from 'validator'
-import { stafData, stafDocument } from '../utils/Interfaces';
 import { validateStafMessage } from "../constants/validateschemamessage";
 const {isEmail}=pkg
 

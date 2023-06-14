@@ -1,7 +1,7 @@
 import { NextFunction } from "express";
 import mongoose,{InferSchemaType} from "mongoose";
 import bcrypt from 'bcryptjs'
-import { UserDocument, UserInput } from "../validations/user.schema";
+import { UserDocument, UserInput } from "../validations/user.ctrl";
 import { validateUserModel } from "../constants/validateschemamessage";
 
 
@@ -9,7 +9,7 @@ const userSchema=new mongoose.Schema<UserInput>({
     name:{
         type:String,
         required:[true,validateUserModel.REQUIRED_NAME_MESSAGE],
-        minLength:[3,"enter the valid name"]
+        min:[3,"enter the valid name"]
     },
     email:{
         type:String,
@@ -33,6 +33,10 @@ const userSchema=new mongoose.Schema<UserInput>({
         default:"user",
     },
 },{timestamps:true})
+
+
+
+
 
 export type User= InferSchemaType<typeof userSchema>
 

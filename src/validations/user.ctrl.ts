@@ -14,7 +14,6 @@ import {object,string} from 'zod'
     password:string({
         required_error:"password is required",
         invalid_type_error:"password must be string"
-
     })
  
 })

@@ -7,7 +7,7 @@ import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
-import { createUserSchema } from './validations/user.schema'
+import { createUserSchema } from './validations/user.ctrl'
 
 // rest variables
 const app=express() 

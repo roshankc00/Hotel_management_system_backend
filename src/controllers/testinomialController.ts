@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { ParamId, UpdateblogData, blogData, resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData } from "../utils/Interfaces"
+import { ParamId,  resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData } from "../validations/testinomial.ctrl"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import TestinomialModel, { Testinomial } from "../models/testinomialmodel"
 

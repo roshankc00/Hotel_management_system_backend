@@ -3,11 +3,11 @@ import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser, createLoginSchema } from '../validations/user.schema';
-import { createUserSchema } from "../validations/user.schema"
+import { tokendata, createUser, userres, loginuser, createLoginSchema } from '../validations/user.ctrl';
+import { createUserSchema } from "../validations/user.ctrl"
 
 // register the user 
-export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response)=>{
+export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
     try {
         const {email,password,name}=req.body
         let  result=createUserSchema.safeParse(req.body)
@@ -44,9 +44,14 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
     }
 })
 
+
+
+
+
+
 // login the user 
 
-export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response)=>{
+export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response<userres>)=>{
     try {
         const {email,password}=req.body
         let  result=createLoginSchema.safeParse(req.body)
