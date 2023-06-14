@@ -1,6 +1,6 @@
 import asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from 'express'
-import { ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../utils/Interfaces'
+import { ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../interfaces/staf.interfaces'
 import StafModel from '../models/stafmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
 

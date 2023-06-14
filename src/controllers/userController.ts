@@ -3,8 +3,8 @@ import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser, createLoginSchema } from '../validations/user.ctrl';
-import { createUserSchema } from "../validations/user.ctrl"
+import { tokendata, createUser, userres, loginuser, createLoginSchema } from '../interfaces/user.interfaces';
+import { createUserSchema } from "../interfaces/user.interfaces"
 
 // register the user 
 export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{

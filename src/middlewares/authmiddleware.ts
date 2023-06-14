@@ -3,7 +3,7 @@ import { Request,Response,NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/usermodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
-import { CustomRequest } from '../validations/user.ctrl'
+import { CustomRequest } from '../interfaces/user.interfaces'
 
 export const checkAuth=asyncHandler(async(req:CustomRequest,res:Response,next:NextFunction)=>{
     try {

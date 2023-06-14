@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe } from "../validations/blog.ctrl"
+import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe } from "../interfaces/blog.interfaces"
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
 

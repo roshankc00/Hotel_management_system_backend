@@ -1,7 +1,7 @@
 import { NextFunction } from "express";
 import mongoose,{InferSchemaType} from "mongoose";
 import bcrypt from 'bcryptjs'
-import { UserDocument, UserInput } from "../validations/user.ctrl";
+import { UserDocument, UserInput } from "../interfaces/user.interfaces";
 import { validateUserModel } from "../constants/validateschemamessage";
 
 

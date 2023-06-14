@@ -1,32 +1,32 @@
 import mongoose from 'mongoose';
 import { Request } from 'express';
+import {userZodMessage} from '../utils/zoderrormessages'
 import {object,string} from 'zod'
 
  export const createUserSchema=object({
     name:string({
-        required_error:"Name is required",
-        invalid_type_error:"Name must be string",
+        required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_NAME_MESSAGE,
     }),
     email:string({
-        required_error:"email is required",
-        invalid_type_error:"enter the valid email"
+        required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_EMAIL_MESSAGE,
     }).email(),
     password:string({
-        required_error:"password is required",
-        invalid_type_error:"password must be string"
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
     })
  
 })
 .strict()
  export const createLoginSchema=object({
     email:string({
-        required_error:"email is required",
-        invalid_type_error:"enter the valid email"
+        required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_EMAIL_MESSAGE,
     }).email(),
     password:string({
-        required_error:"password is required",
-        invalid_type_error:"password must be string"
-
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
     })
  
 })

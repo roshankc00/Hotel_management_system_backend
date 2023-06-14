@@ -1,6 +1,6 @@
 import mongoose,{InferSchemaType} from 'mongoose';
 import { validateTestinomialMessage } from '../constants/validateschemamessage';
-import { testiDocument, testiInput } from '../validations/testinomial.ctrl';
+import { testiDocument, testiInput } from '../interfaces/testinomial.interfaces';
 
 
 

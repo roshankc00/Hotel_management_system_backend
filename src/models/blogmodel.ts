@@ -1,6 +1,6 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import { validateBlogMessage } from "../constants/validateschemamessage";
-import { blogDocument, blogInput } from "../validations/blog.ctrl";
+import { blogDocument, blogInput } from "../interfaces/blog.interfaces";
 
 
 
