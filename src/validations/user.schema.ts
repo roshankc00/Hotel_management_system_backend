@@ -19,6 +19,26 @@ import {object,string} from 'zod'
  
 })
 .strict()
+ export const createLoginSchema=object({
+    email:string({
+        required_error:"email is required",
+        invalid_type_error:"enter the valid email"
+    }).email(),
+    password:string({
+        required_error:"password is required",
+        invalid_type_error:"password must be string"
+
+    })
+ 
+})
+.strict()
+
+
+
+
+
+
+
 
 
 
@@ -53,8 +73,9 @@ export interface loginuser {
     password:string
 }
 export interface userres{
-    sucess:boolean,
-    token:string
+    sucess?:boolean,
+    token?:string,
+    error?:any
 }
 
 

@@ -1,43 +1,53 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import pkg  from 'validator'
 import { stafData, stafDocument } from '../utils/Interfaces';
+import { validateStafMessage } from "../constants/validateschemamessage";
 const {isEmail}=pkg
 
 
 const stafSchema=new mongoose.Schema({
     name:{
         type:String,
-        required:[true,"staff name is required"],
-        minLength:[4,"enter the valid name"]
+        required:[true,validateStafMessage.REQUIRED_name_MESSAGE],
+        min:[4,validateStafMessage.MIN_NAME_MESSAGE],
+        max:[30,validateStafMessage.MAX_NAME_MESSAGE]
     },
     address:{
         type:String,
-        required:[true,"staff address is required"],
-        minLength:[4,"enter the valid name"]
+        required:[true,validateStafMessage.REQUIRED_name_MESSAGE],
+        min:[3,validateStafMessage.MIN_NAME_MESSAGE],
+        max:[30,validateStafMessage.MAX_NAME_MESSAGE]
     },
     position:{
         type:String,
-        required:[true,"staff position is required"],
+        required:[true,validateStafMessage.REQUIRED_position_MESSAGE],
     },
     salary:{
         type:Number,
-        required:true,
+        required:[true,validateStafMessage.REQUIRED_salary_MESSAGE],
     },
     email:{
         type:String,
-        required:[true,"email is required"],
-        unique:[true,"email is required"],
-        validate:[isEmail,"enter the valid email"]
+        required:[true,validateStafMessage.REQUIRED_email_MESSAGE],
+        unique:[true,validateStafMessage.VALID_email_MESSAGE],
+        match:[
+            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+            validateStafMessage.VALID_email_MESSAGE
+        ],
+        
     },
     age:{
         type:Number,
+        required:[true,validateStafMessage.REQUIRED_age_MESSAGE]
+        
         },
     acheiveaments:[{
         type:String
         }],
     phoneNumber:{
         type:Number,
-        minlength:[9,"Enter the valid phone number"]
+        min:[9,"Enter the valid phone number"],
+        required:[true,validateStafMessage.REQUIRED_phoneNumber_MESSAGE]
     }    
 },{timestamps:true})
 

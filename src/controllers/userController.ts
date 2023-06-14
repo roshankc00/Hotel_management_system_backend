@@ -3,19 +3,22 @@ import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser } from '../validations/user.schema';
+import { tokendata, createUser, userres, loginuser, createLoginSchema } from '../validations/user.schema';
 import { createUserSchema } from "../validations/user.schema"
 
 // register the user 
-export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
+export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response)=>{
     try {
         const {email,password,name}=req.body
-        // zod validation 
         let  result=createUserSchema.safeParse(req.body)
         let wow:any=JSON.stringify(result,null,2)
-       
-
-      
+         wow=JSON.parse(wow)
+        if(!wow.sucess){
+            res.status(400).json({
+                error:wow
+            })
+            return 
+        }
         const existingUser=await UserModel.findOne({email})
         if(existingUser){
             throw new Error("user already exists")
@@ -43,10 +46,22 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
 
 // login the user 
 
-export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response<userres>)=>{
+export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response)=>{
     try {
         const {email,password}=req.body
+        let  result=createLoginSchema.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+        if(!wow.sucess){
+            res.status(400).json({
+                error:wow
+            })
+            return 
+        }
         const existUser=await UserModel.findOne({email})
+
+
+
         if(!existUser){
             throw new Error("register first")
         }

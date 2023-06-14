@@ -1,26 +1,32 @@
 import { NextFunction } from "express";
-import {z} from 'zod'
 import mongoose,{InferSchemaType} from "mongoose";
-import pkg from 'validator'
-const {isEmail}=pkg
 import bcrypt from 'bcryptjs'
 import { UserDocument, UserInput } from "../validations/user.schema";
+import { validateUserModel } from "../constants/validateschemamessage";
 
 
 const userSchema=new mongoose.Schema<UserInput>({
     name:{
         type:String,
-        required:[true,"username is required"],
+        required:[true,validateUserModel.REQUIRED_NAME_MESSAGE],
         minLength:[3,"enter the valid name"]
     },
     email:{
         type:String,
-        required:true,
-        validate:[isEmail,"enter the proper email"]
+        required:[true,validateUserModel.REQUIRED_EMAIL_MESSAGE],
+        match:[
+            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+            validateUserModel.VALID_EMAIL_MESSAGE
+        ],
+
     },
     password:{
         type:String,
-        required:true,
+        required:[true,validateUserModel.REQUIRED_PASSWORD_MESSAGE],
+        match:[
+            /"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"/,
+            validateUserModel.VALID_PASSWORD_MESSAGE
+        ]
     },
     role:{
         type:String,

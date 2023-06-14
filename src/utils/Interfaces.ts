@@ -81,6 +81,9 @@ export interface UpdateblogData  {
 
 
 //---------------------- staf interfaces -------------------
+// export interface CustomRequest extends Request {
+//     user?:; 
+//   }
 export interface stafData {
     name:String,
     address:string,
@@ -155,47 +158,20 @@ export interface testinomialgetAllData {
     sucess:boolean,
     testinomials:Array<Testinomial>
 }
-
+export interface image {
+    public_id:string,
+    url:string
+}
+export interface testiInput {
+    name:string,
+    description:string,
+    image:string,
+}
+export interface testiDocument extends testiInput, mongoose.Document{
+    createdAt:Date,
+    updatedAt:Date,
+}
 
 
 
 // -----------------------------------user -------------------------------------
-export interface CustomRequest extends Request {
-    user?:UserDocument; 
-  }
-  export interface UserInput {
-    email:string,
-    password:string,
-    name:string,
-    role:string,    
-}
-export interface UserDocument extends UserInput, mongoose.Document{
-    creaetedAt:Date,
-    updatedAt:Date,
-    comparePassword(password:string):Promise<boolean>;
-}
-
-export interface UserInput {
-    email:string,
-    password:string,
-    name:string,
-    role:string,    
-}
-export interface createUser {
-    email:string,
-    password:string,
-    name:string,
-}
-export interface loginuser {
-    email:string,
-    password:string
-}
-export interface userres{
-    sucess:boolean,
-    token:string
-}
-
-
-export interface tokendata {
-    id:mongoose.Schema.Types.ObjectId
-}
