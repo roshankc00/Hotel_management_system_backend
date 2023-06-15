@@ -5,7 +5,7 @@ const express=require('express')
 const router=express.Router()
 
 
-router.post('/staf',createStaf)
+router.post('/staf/create',createStaf)
 router.get('/staf/:id',getSingleStaf)
 router.get('/stafs',checkAuth,getAllStaf)
 router.delete('/staf/:id',deleteStaf)

@@ -13,30 +13,32 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
         let  result=createUserSchema.safeParse(req.body)
         let wow:any=JSON.stringify(result,null,2)
          wow=JSON.parse(wow)
-        if(!wow.sucess){
+        if(!wow.success){
             res.status(400).json({
                 error:wow
             })
             return 
+        }else{
+            const existingUser=await UserModel.findOne({email})
+            if(existingUser){
+                throw new Error("user already exists")
+            }
+           let  user=await UserModel.create({
+            email,
+            password,
+            name
+           })
+           const data:tokendata={
+            id:user._id
+           }
+           const token=jwt.sign(data,env.SECRET)
+         
+           res.status(200).json({
+            sucess:true,
+            token
+           })
         }
-        const existingUser=await UserModel.findOne({email})
-        if(existingUser){
-            throw new Error("user already exists")
-        }
-       let  user=await UserModel.create({
-        email,
-        password,
-        name
-       })
-       const data:tokendata={
-        id:user._id
-       }
-       const token=jwt.sign(data,env.SECRET)
-     
-       res.status(200).json({
-        sucess:true,
-        token
-       })
+       
 
         
     } catch (error:any) {
@@ -57,7 +59,7 @@ export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Res
         let  result=createLoginSchema.safeParse(req.body)
         let wow:any=JSON.stringify(result,null,2)
          wow=JSON.parse(wow)
-        if(!wow.sucess){
+        if(!wow.success){
             res.status(400).json({
                 error:wow
             })

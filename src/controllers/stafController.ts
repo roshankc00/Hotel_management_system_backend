@@ -1,20 +1,29 @@
 import asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from 'express'
-import { ParamId, achievement, allstaf, getStaf, param, promote, resMe, stafData } from '../interfaces/staf.interfaces'
+import { ParamId, achievement, allstaf, createStafInterfaceValid, getStaf, param, promote, resMe, stafAchievementValid, stafData, stafPositionValid, updateStafInterfaceValid } from '../interfaces/staf.interfaces'
 import StafModel from '../models/stafmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
 
 export const createStaf:RequestHandler=asyncHandler(async(req:Request<any,any,stafData,any>,res:Response<resMe>)=>{
     try {
-        const {name,address,position,salary,email,phoneNumber}=req.body
-        if(!name || !address || !position || !salary || !email ||!phoneNumber){
-            throw new Error("all the fields are necesssary")
-        }
+        const {name,address,position,salary,email,phoneNumber,age}=req.body 
          const chectStaf=await StafModel.findOne({email})
+         console.log(chectStaf)
          if (chectStaf){
             throw new Error("this user already exists")
          }
-
+         let  result=createStafInterfaceValid.safeParse(req.body)
+         let wow:any=JSON.stringify(result,null,2)
+          wow=JSON.parse(wow)
+          console.log(wow)
+         if(!wow.success){
+             res.status(400).json({
+                sucess:false,
+                error:wow
+                 
+             })
+             return 
+         }else{
             const staf=await StafModel.create({
                 name,
                 email,
@@ -22,11 +31,15 @@ export const createStaf:RequestHandler=asyncHandler(async(req:Request<any,any,st
                 salary,
                 phoneNumber,
                 address,
+                age
             })
             res.status(200).json({
                 sucess:true,
-                message:"user created sucessfully"
+                message:"staf created sucessfully"
             })
+         }
+
+
         
         
     } catch (error:any) {
@@ -76,11 +89,30 @@ export const updateStaf:RequestHandler=asyncHandler(async(req:Request,res:Respon
         if(!checkstaf){
             throw new Error("no staf exists")
         }
-        const staf=await StafModel.findById(id,req.body,{new:true})
-        res.status(200).json({
-            staf
+        let  result=updateStafInterfaceValid.safeParse(req.body)
+         let wow:any=JSON.stringify(result,null,2)
+          wow=JSON.parse(wow)
+          console.log(wow)
+         if(!wow.success){
+             res.status(400).json({
+                sucess:false,
+                error:wow
+                 
+             })
+             return 
+         }else{
+            const staf=await StafModel.findByIdAndUpdate(id,req.body,{new:true})
+            res.status(200).json({
+                staf
+    
+            })
 
-        })
+
+         }
+        
+
+
+       
     } catch (error:any) {
         throw new Error(error)
         
@@ -116,19 +148,34 @@ export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request<an
         }
         const id:string =req.params.id
         validateMongodbId(id);
-        const staf=await StafModel.findById(id)
+        let  result=stafAchievementValid.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+         console.log(wow)
+        if(!wow.success){
+            res.status(400).json({
+               sucess:false,
+               error:wow
+                
+            })
+            return 
+        }else{
+            const staf=await StafModel.findById(id)
   
-        if(!staf){
-            throw new Error("user not found")
-        }
-        console.log("wow")
-        staf.acheiveaments.push(achievement)
-        await staf.save()
-        console.log(staf)
-        res.status(200).json({
-            sucess:true,
-            staf
-        })
+            if(!staf){
+                throw new Error("user not found")
+            }
+            console.log("wow")
+            
+            staf.acheiveaments.push(achievement)
+            await staf.save()
+            console.log(staf)
+            res.status(200).json({
+                sucess:true,
+                staf
+            })
+
+        }      
     } catch (error:any) {
         throw new Error(error)
         
@@ -137,22 +184,36 @@ export const addAcheivementStaf:RequestHandler=asyncHandler(async(req:Request<an
 // promote the staf 
 export const promoteStaf:RequestHandler=asyncHandler(async(req:Request<any,any,promote>,res:Response<resMe>)=>{
     try {
+        const id:string =req.params.id
+        validateMongodbId(id);
         const position=req.body.position
         if(position.length<=3){
             throw new Error("enter the valid achievement")
         }
-        const id:string =req.params.id
-        validateMongodbId(id);
-        const staf=await StafModel.findById(id)
-        if(!staf){
-            throw new Error("user not found")
+        let  result=stafPositionValid.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+         console.log(wow)
+        if(!wow.success){
+            res.status(400).json({
+               sucess:false,
+               error:wow
+            })
+            return 
+        }else{
+            const staf=await StafModel.findById(id)
+            if(!staf){
+                throw new Error("user not found")
+            }
+            staf.position=position
+            await staf.save()
+            res.status(200).json({
+                sucess:true,
+                message:"staf has been promoted"
+            })
         }
-        staf.position=position
-        await staf.save()
-        res.status(200).json({
-            sucess:true,
-            message:"staf has been promoted"
-        })
+        
+      
     } catch (error:any) {
         throw new Error(error)
         
