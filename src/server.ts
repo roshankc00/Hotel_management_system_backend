@@ -7,6 +7,7 @@ import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
+import morgan from 'morgan'
 import { createUserSchema } from './interfaces/user.interfaces'
 
 // rest variables
@@ -19,6 +20,7 @@ connectDb()
 
 // all the middlewares
 app.use(express.json())
+app.use(morgan('dev'))
 
 // all the routes
 

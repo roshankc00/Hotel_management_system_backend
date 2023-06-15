@@ -3,6 +3,7 @@ import mongoose,{InferSchemaType} from "mongoose";
 import bcrypt from 'bcryptjs'
 import { UserDocument, UserInput } from "../interfaces/user.interfaces";
 import { validateUserModel } from "../constants/validateschemamessage";
+import crypto from 'crypto'
 
 
 const userSchema=new mongoose.Schema<UserInput>({
@@ -32,6 +33,12 @@ const userSchema=new mongoose.Schema<UserInput>({
         type:String,
         default:"user",
     },
+    resetPasswordToken:{
+        type:String
+    },
+    resetDateExpire:{
+        type:Date
+    }
 },{timestamps:true})
 
 
@@ -53,6 +60,17 @@ userSchema.pre(
 
 userSchema.methods.comparePassword=async function(password:string):Promise<boolean>{
     return await bcrypt.compare(password,this.password)
+}
+userSchema.methods.generateToken=async function():Promise<string>{
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    console.log(resetToken,"forget")
+    this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+    return resetToken
+
+
 }
 
 const UserModel=mongoose.model<UserDocument>('User',userSchema)

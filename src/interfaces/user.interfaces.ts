@@ -54,13 +54,16 @@ export interface UserDocument extends UserInput, mongoose.Document{
     creaetedAt:Date,
     updatedAt:Date,
     comparePassword(password:string):Promise<boolean>;
+    generateToken():Promise<string>;
 }
 
 export interface UserInput {
     email:string,
     password:string,
     name:string,
-    role:string,    
+    role:string, 
+    resetPasswordToken?:string,
+    resetDateExpire?:Date
 }
 export interface createUser {
     email:string,
