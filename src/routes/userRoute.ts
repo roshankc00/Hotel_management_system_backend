@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteUser, forgetPassword, getASingleUser, getAllUsers, loginUser, registerUser, updateRole } from '../controllers/userController';
+import { deleteUser, forgetPassword, getASingleUser, getAllUsers, loginUser, registerUser, resetPassword, updateRole } from '../controllers/userController';
 
 
 const router=express.Router()
@@ -12,6 +12,7 @@ router.get('/users',getAllUsers)
 router.get('/user/changerole/:id',updateRole)
 router.delete('/user/delete',deleteUser)
 router.put('/user/forgetpassword',forgetPassword)
+router.put('/user/password/reset/:token',resetPassword)
 
 
 

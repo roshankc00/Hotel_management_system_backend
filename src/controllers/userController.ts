@@ -6,6 +6,7 @@ import env from '../utils/validateEnv'
 import { tokendata, createUser, userres, loginuser, createLoginSchema, CustomRequest } from '../interfaces/user.interfaces';
 import { createUserSchema } from "../interfaces/user.interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
+import crypto from 'crypto';
 
 // register the user 
 export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
@@ -186,11 +187,19 @@ export const forgetPassword=asyncHandler(async(req,res)=>{
         const {email}=req.body
         const user=await UserModel.findOne({email})
        let token =await  user.generateToken()
+       await user.save()
        console.log(token)
+       console.log(user)
        const resetUrl=`${req.protocol}://${req.get("host")}/api/v1/user/password/reset/${token}`
-        const message=`Reset Your password on clicking:\n ${resetUrl} `
-        res.send(message)
-        
+        const message=`Reset Your password on clicking:\n ${resetUrl}`
+        try {
+            res.send(message)        
+        } catch (error) {
+            user.resetPasswordToken=undefined
+            user.resetDateExpire=undefined
+            await user.save()
+            
+        }
     } catch (error:any) {
         throw new Error(error)
         
@@ -199,3 +208,29 @@ export const forgetPassword=asyncHandler(async(req,res)=>{
 
 
 
+export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
+    try {
+        const {newPassword,confirmPassword}=req.body
+        if(newPassword!==confirmPassword){
+            throw new Error('the password doesnt match')
+        }
+        const token=req.params.token
+        const resetPasswordToken=crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+        const user=await UserModel.findOne({resetPasswordToken, resetPasswordExpire:{$gt:Date.now()}})
+        if(user){
+            user.password=newPassword
+            user.resetPasswordToken=undefined
+            user.resetDateExpire=undefined
+            await user.save()
+        }else{
+            throw new Error("the token is expired or the token is not valid")
+        }
+    } catch (error:any) {
+        throw new Error(error)
+        
+    }
+
+})
