@@ -7,6 +7,9 @@ import { CustomRequest } from '../interfaces/user.interfaces'
 
 export const checkAuth=asyncHandler(async(req:CustomRequest,res:Response,next:NextFunction)=>{
     try {
+        if(!req.headers.authorization){
+            throw new Error("no token is attach to header")
+        }
         let checktoken=req.headers.authorization.startsWith('Bearer')
         if(!checktoken){
             throw new Error("register first")
@@ -22,3 +25,15 @@ export const checkAuth=asyncHandler(async(req:CustomRequest,res:Response,next:Ne
         throw new Error(error)        
     }
 })
+
+
+
+export const checkRole=(...roles:any)=>(req:CustomRequest,res:Response,next:NextFunction)=>{
+    if(roles.includes(req.user.role)){
+        next()
+    }else{
+        throw new Error("you are not authorized to access this resources")
+    }
+
+
+}

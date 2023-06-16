@@ -2,11 +2,13 @@ import asyncHandler from "express-async-handler"
 import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 import env from '../utils/validateEnv'
 import { tokendata, createUser, userres, loginuser, createLoginSchema, CustomRequest } from '../interfaces/user.interfaces';
 import { createUserSchema } from "../interfaces/user.interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import crypto from 'crypto';
+import sendEmail from "../utils/sendEmail"
 
 // register the user 
 export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
@@ -182,23 +184,29 @@ export const deleteUser=asyncHandler(async(req:CustomRequest,res)=>{
 })
 
 // forgetPassword
-export const forgetPassword=asyncHandler(async(req,res)=>{
+export const forgetPassword=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const {email}=req.body
         const user=await UserModel.findOne({email})
+        if(!user){
+            throw new Error("user doesnt exists")
+        }
        let token =await  user.generateToken()
        await user.save()
-       console.log(token)
-       console.log(user)
        const resetUrl=`${req.protocol}://${req.get("host")}/api/v1/user/password/reset/${token}`
         const message=`Reset Your password on clicking:\n ${resetUrl}`
+        const subject:string="Reset your password"
         try {
-            res.send(message)        
+            console.log("me")
+           await  sendEmail({email,message,subject})
+           res.status(200).json({
+            sucess:true,
+            message:"mail sent sucessfully"
+           })
         } catch (error) {
             user.resetPasswordToken=undefined
             user.resetDateExpire=undefined
             await user.save()
-            
         }
     } catch (error:any) {
         throw new Error(error)
@@ -208,6 +216,7 @@ export const forgetPassword=asyncHandler(async(req,res)=>{
 
 
 
+// reset password 
 export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const {newPassword,confirmPassword}=req.body
@@ -219,15 +228,53 @@ export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
         .createHash("sha256")
         .update(token)
         .digest("hex");
-        const user=await UserModel.findOne({resetPasswordToken, resetPasswordExpire:{$gt:Date.now()}})
+        const user=await UserModel.findOne({
+            resetPasswordToken,
+            resetDateExpire: { $gt: Date.now() }
+             })
+        console.log(user)
         if(user){
             user.password=newPassword
             user.resetPasswordToken=undefined
             user.resetDateExpire=undefined
             await user.save()
+            res.status(200).json({
+                sucess:true,
+                message:"password has been changed sucessfully"
+            })
         }else{
             throw new Error("the token is expired or the token is not valid")
         }
+    } catch (error:any) {
+        throw new Error(error)
+        
+    }
+})
+
+
+// UPDATE the password 
+export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
+    try {
+        const {email,newPassword,oldPassword}=req.body
+        const user=await UserModel.findOne({email})
+        if(!user){
+            throw new Error("user email doesnt match")
+        }
+       let  isTrue=await user.comparePassword(oldPassword)
+       if(isTrue){
+        user.password=newPassword
+        await user.save()
+        res.status(200).json({
+            sucess:true,
+            user
+        })
+       }else{
+        res.status(200).json({
+            sucess:true,
+            message:"enter the valid password"
+        })
+       }
+        
     } catch (error:any) {
         throw new Error(error)
         

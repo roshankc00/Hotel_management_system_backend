@@ -65,13 +65,11 @@ userSchema.methods.comparePassword=async function(password:string):Promise<boole
 
 userSchema.methods.generateToken=async function():Promise<string>{
     const resetToken = crypto.randomBytes(20).toString("hex");
-    console.log(resetToken,"forget")
-    this.resetDateExpire=Date.now()+10*60*1000
+    this.resetDateExpire=Date.now()+10 * 60 * 1000
     this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-    console.log(this)
     return resetToken
 
 
