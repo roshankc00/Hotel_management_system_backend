@@ -8,7 +8,6 @@ import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
 import morgan from 'morgan'
-import { createUserSchema } from './interfaces/user.interfaces'
 
 // rest variables
 const app=express() 

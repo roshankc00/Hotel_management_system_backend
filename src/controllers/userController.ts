@@ -4,8 +4,7 @@ import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser, createLoginSchema, CustomRequest } from '../interfaces/user.interfaces';
-import { createUserSchema } from "../interfaces/user.interfaces"
+import { tokendata, createUser, userres, loginuser, createLoginValid, CustomRequest ,createUserValid, forgetPasswordValid, resetPasswordValid, updatePasswordValid} from '../interfaces/user.interfaces';
 import validateMongodbId from "../utils/mongodbIdValidator"
 import crypto from 'crypto';
 import sendEmail from "../utils/sendEmail"
@@ -15,7 +14,7 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
     try {
         const {email,password,name}=req.body
         // validating the req.body type 
-        let  result=createUserSchema.safeParse(req.body)
+        let  result=createUserValid.safeParse(req.body)
         let wow:any=JSON.stringify(result,null,2)
          wow=JSON.parse(wow)
         if(!wow.success){
@@ -63,7 +62,7 @@ export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Res
     try {
         const {email,password}=req.body
         // validating the incomming req.body type 
-        let  result=createLoginSchema.safeParse(req.body)
+        let  result=createLoginValid.safeParse(req.body)
         let wow:any=JSON.stringify(result,null,2)
          wow=JSON.parse(wow)
         if(!wow.success){
@@ -187,27 +186,43 @@ export const deleteUser=asyncHandler(async(req:CustomRequest,res)=>{
 export const forgetPassword=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const {email}=req.body
-        const user=await UserModel.findOne({email})
-        if(!user){
-            throw new Error("user doesnt exists")
+             // validating the req.body type 
+        let  result=forgetPasswordValid.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+        if(!wow.success){
+            res.status(400).json({
+                error:wow
+            })
+            return 
+
+        }else{
+            const user=await UserModel.findOne({email})
+            if(!user){
+                throw new Error("user doesnt exists")
+            }
+           let token =await  user.generateToken()
+           await user.save()
+           const resetUrl=`${req.protocol}://${req.get("host")}/api/v1/user/password/reset/${token}`
+            const message=`Reset Your password on clicking:\n ${resetUrl}`
+            const subject:string="Reset your password"
+            try {
+                console.log("me")
+               await  sendEmail({email,message,subject})
+               res.status(200).json({
+                sucess:true,
+                message:"mail sent sucessfully"
+               })
+            } catch (error) {
+                user.resetPasswordToken=undefined
+                user.resetDateExpire=undefined
+                await user.save()
+            }
+
         }
-       let token =await  user.generateToken()
-       await user.save()
-       const resetUrl=`${req.protocol}://${req.get("host")}/api/v1/user/password/reset/${token}`
-        const message=`Reset Your password on clicking:\n ${resetUrl}`
-        const subject:string="Reset your password"
-        try {
-            console.log("me")
-           await  sendEmail({email,message,subject})
-           res.status(200).json({
-            sucess:true,
-            message:"mail sent sucessfully"
-           })
-        } catch (error) {
-            user.resetPasswordToken=undefined
-            user.resetDateExpire=undefined
-            await user.save()
-        }
+
+
+       
     } catch (error:any) {
         throw new Error(error)
         
@@ -220,31 +235,43 @@ export const forgetPassword=asyncHandler(async(req:Request,res:Response)=>{
 export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const {newPassword,confirmPassword}=req.body
-        if(newPassword!==confirmPassword){
-            throw new Error('the password doesnt match')
-        }
-        const token=req.params.token
-        const resetPasswordToken=crypto
-        .createHash("sha256")
-        .update(token)
-        .digest("hex");
-        const user=await UserModel.findOne({
-            resetPasswordToken,
-            resetDateExpire: { $gt: Date.now() }
-             })
-        console.log(user)
-        if(user){
-            user.password=newPassword
-            user.resetPasswordToken=undefined
-            user.resetDateExpire=undefined
-            await user.save()
-            res.status(200).json({
-                sucess:true,
-                message:"password has been changed sucessfully"
-            })
-        }else{
-            throw new Error("the token is expired or the token is not valid")
-        }
+                 // validating the req.body type 
+                 let  result=resetPasswordValid.safeParse(req.body)
+                 let wow:any=JSON.stringify(result,null,2)
+                  wow=JSON.parse(wow)
+                 if(!wow.success){
+                     res.status(400).json({
+                         error:wow
+                     })
+                     return 
+                    //  validation ends here 
+                 }else{
+                    if(newPassword!==confirmPassword){
+                        throw new Error('the password doesnt match')
+                    }
+                    const token=req.params.token
+                    const resetPasswordToken=crypto
+                    .createHash("sha256")
+                    .update(token)
+                    .digest("hex");
+                    const user=await UserModel.findOne({
+                        resetPasswordToken,
+                        resetDateExpire: { $gt: Date.now() }
+                         })
+                    console.log(user)
+                    if(user){
+                        user.password=newPassword
+                        user.resetPasswordToken=undefined
+                        user.resetDateExpire=undefined
+                        await user.save()
+                        res.status(200).json({
+                            sucess:true,
+                            message:"password has been changed sucessfully"
+                        })
+                    }else{
+                        throw new Error("the token is expired or the token is not valid")
+                    }
+                 }
     } catch (error:any) {
         throw new Error(error)
         
@@ -256,6 +283,21 @@ export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
 export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const {email,newPassword,oldPassword}=req.body
+             // validating the req.body type 
+             let  result=updatePasswordValid.safeParse(req.body)
+             let wow:any=JSON.stringify(result,null,2)
+              wow=JSON.parse(wow)
+             if(!wow.success){
+                 res.status(400).json({
+                     error:wow
+                 })
+                 return 
+                //  validation ends here 
+             }
+
+
+
+
         const user=await UserModel.findOne({email})
         if(!user){
             throw new Error("user email doesnt match")

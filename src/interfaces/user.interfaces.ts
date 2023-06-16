@@ -3,7 +3,7 @@ import { Request } from 'express';
 import {userZodMessage} from '../utils/zoderrormessages'
 import {object,string} from 'zod'
 
- export const createUserSchema=object({
+ export const createUserValid=object({
     name:string({
         required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
         invalid_type_error:userZodMessage.INVALID_NAME_MESSAGE,
@@ -19,7 +19,7 @@ import {object,string} from 'zod'
  
 })
 .strict()
- export const createLoginSchema=object({
+ export const createLoginValid=object({
     email:string({
         required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
         invalid_type_error:userZodMessage.INVALID_EMAIL_MESSAGE,
@@ -31,6 +31,47 @@ import {object,string} from 'zod'
  
 })
 .strict()
+
+
+
+export const forgetPasswordValid=object({
+    email:string({
+        required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_EMAIL_MESSAGE,
+    }).email(),
+}).strict()
+
+
+
+export const resetPasswordValid=object({
+    newPassword:string({
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
+    }),
+    confirmPassword:string({
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
+    })
+}).strict()
+
+
+export const updatePasswordValid=object({
+    newPassword:string({
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
+    }),
+    oldPassword:string({
+        required_error:userZodMessage.REQUIRED_PASSWORD_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_PASSWORD_MESSAGE,
+    }),
+    email:string({
+        required_error:userZodMessage.REQUIRED_EMAIL_MESSAGE,
+        invalid_type_error:userZodMessage.INVALID_EMAIL_MESSAGE,
+    }).email(),
+
+}).strict()
+
+
 
 
 
