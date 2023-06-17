@@ -44,3 +44,28 @@ export const ACHEIVEMENT_AND_POSITION_MESSAGE={
     REQUIRED_POSITION_MESSAGE:'Position is required'
 
 }
+
+
+
+// testinomial
+export const CREATE_TESTINOMIAL ={
+    INVALID_NAME_MESSAGE:"name must be string",
+    REQUIRED_NAME_MESSAGE:'name is required',
+
+    INVALID_DESCRIPTION_MESSAGE:"description must be string",
+    REQUIRED_DECRIPTION_MESSAGE:'description is required'
+
+}
+
+
+// blog 
+ export const  CREATE_BLOG={
+    INVALID_TITLE_MESSAGE:"title must be string",
+    REQUIRED_TITLE_MESSAGE:'title is required',
+
+     INVALID_DESCRIPTION_MESSAGE:"description must be string",
+    REQUIRED_DECRIPTION_MESSAGE:'description is required',
+
+    INVALID_TAG_MESSAGE:"description must be string",
+    REQUIRED_TAG_MESSAGE:'description is required'
+}

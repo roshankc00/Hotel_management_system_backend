@@ -1,11 +1,10 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe } from '../interfaces/blog.interfaces';
+import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe, validateCreateBlog, validateUpdateBlog } from '../interfaces/blog.interfaces';
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import cloudinary from 'cloudinary';
-import upload from '../middlewares/multer';
 
 
 
@@ -13,6 +12,17 @@ import upload from '../middlewares/multer';
 export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request<any,any,blogData>,res:Response)=>{
     try {
         const {title,description,tag}=req.body
+
+            // validating the req.body type 
+            let  result=validateCreateBlog.safeParse(req.body)
+            let wow:any=JSON.stringify(result,null,2)
+             wow=JSON.parse(wow)
+            if(!wow.success){
+                res.status(400).json({
+                    error:wow
+                })
+                return 
+            }
         const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
         cloud.then(async(data:any)=>{
             const blog=await BlogModel.create({
@@ -124,6 +134,16 @@ export const updateBlog:RequestHandler=asyncHandler(async(req:Request<ParamId,an
     try {
         const id=req.params.id
         validateMongodbId(id)
+             // validating the req.body type 
+             let  result=validateUpdateBlog.safeParse(req.body)
+             let wow:any=JSON.stringify(result,null,2)
+              wow=JSON.parse(wow)
+             if(!wow.success){
+                 res.status(400).json({
+                     error:wow
+                 })
+                 return 
+             }
        let blog=await BlogModel.findById(id)
         if(!blog){
             throw new Error('blog not found')

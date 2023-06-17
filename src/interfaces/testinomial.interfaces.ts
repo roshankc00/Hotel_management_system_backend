@@ -1,5 +1,45 @@
 import mongoose from "mongoose"
 import { Testinomial } from "../models/testinomialmodel"
+import { object, string } from "zod"
+import { CREATE_TESTINOMIAL } from "../utils/zoderrormessages"
+
+
+
+export const validateCreateTestinomial=object({
+    name:string({
+        invalid_type_error:CREATE_TESTINOMIAL.INVALID_NAME_MESSAGE,
+        required_error:CREATE_TESTINOMIAL.REQUIRED_NAME_MESSAGE
+       }),
+    description:string({
+        invalid_type_error:CREATE_TESTINOMIAL.INVALID_DESCRIPTION_MESSAGE,
+        required_error:CREATE_TESTINOMIAL.REQUIRED_DECRIPTION_MESSAGE
+    })
+})
+.strict()
+
+
+export const validateUpdateTestinomial=object({
+    name:string({
+        invalid_type_error:CREATE_TESTINOMIAL.INVALID_NAME_MESSAGE,
+        required_error:CREATE_TESTINOMIAL.REQUIRED_NAME_MESSAGE
+       }).optional(),
+    description:string({
+        invalid_type_error:CREATE_TESTINOMIAL.INVALID_DESCRIPTION_MESSAGE,
+        required_error:CREATE_TESTINOMIAL.REQUIRED_DECRIPTION_MESSAGE
+    }).optional()
+})
+.strict()
+
+
+
+
+
+
+
+
+
+
+
 
 
 

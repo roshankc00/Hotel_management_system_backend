@@ -1,5 +1,55 @@
 import mongoose from "mongoose"
 import { Blog, Blogs } from "../models/blogmodel"
+import { object, string } from "zod"
+import { CREATE_BLOG } from "../utils/zoderrormessages"
+
+
+
+
+
+
+
+export const validateCreateBlog=object({
+    tag:string({
+        required_error:CREATE_BLOG.INVALID_TAG_MESSAGE,
+        invalid_type_error:CREATE_BLOG.INVALID_TAG_MESSAGE
+
+    }),
+    description:string({
+        required_error:CREATE_BLOG.REQUIRED_DECRIPTION_MESSAGE,
+        invalid_type_error:CREATE_BLOG.INVALID_DESCRIPTION_MESSAGE
+    
+
+    }),
+    title:string({
+        required_error:CREATE_BLOG.REQUIRED_TITLE_MESSAGE,
+        invalid_type_error:CREATE_BLOG.REQUIRED_TITLE_MESSAGE
+    })
+})
+.strict()
+
+
+
+
+export const validateUpdateBlog=object({
+    tag:string({
+        required_error:CREATE_BLOG.INVALID_TAG_MESSAGE,
+        invalid_type_error:CREATE_BLOG.INVALID_TAG_MESSAGE
+
+    }).optional(),
+    description:string({
+        required_error:CREATE_BLOG.REQUIRED_DECRIPTION_MESSAGE,
+        invalid_type_error:CREATE_BLOG.INVALID_DESCRIPTION_MESSAGE
+    
+
+    }).optional(),
+    title:string({
+        required_error:CREATE_BLOG.REQUIRED_TITLE_MESSAGE,
+        invalid_type_error:CREATE_BLOG.REQUIRED_TITLE_MESSAGE
+    }).optional()
+})
+.strict()
+
 
 
 

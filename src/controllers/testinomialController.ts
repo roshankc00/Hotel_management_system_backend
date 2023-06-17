@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 const asyncHandler=require('express-async-handler')
 import { Request,Response,RequestHandler } from "express"
-import { ParamId,  resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData } from "../interfaces/testinomial.interfaces"
+import { ParamId,  resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData, validateCreateTestinomial, validateUpdateTestinomial } from "../interfaces/testinomial.interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import TestinomialModel, { Testinomial } from "../models/testinomialmodel"
 import cloudinary from 'cloudinary';
@@ -11,8 +11,14 @@ import cloudinary from 'cloudinary';
 export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<any,any,testinomialData>,res:Response)=>{
     try {
         const {name,description}=req.body
-        if(!name || !description){
-            throw new Error("all the fields are necessary")
+        let  result=validateCreateTestinomial.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+        if(!wow.success){
+            res.status(400).json({
+                error:wow
+            })
+            return 
         }else{
             const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
             cloud.then(async(data:any) => {  
@@ -63,11 +69,21 @@ export const getASingleTestinomial:RequestHandler=asyncHandler(async(req:Request
        }
 
 })
+
 // update the testinomial
-export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId,any,testinomialUpdateData>,res:Response<resMe>)=>{
+export const updateTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId,any,testinomialUpdateData>,res:Response)=>{
        try {
         const id=req.params.id
         validateMongodbId(id)  
+        let  result=validateUpdateTestinomial.safeParse(req.body)
+        let wow:any=JSON.stringify(result,null,2)
+         wow=JSON.parse(wow)
+        if(!wow.success){
+            res.status(400).json({
+                error:wow
+            })
+            return 
+        }
         const checkTest=await TestinomialModel.findById(id)
         if(!checkTest){
             throw new Error("testinomial not found")
