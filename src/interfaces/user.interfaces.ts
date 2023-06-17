@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Request } from 'express';
 import {userZodMessage} from '../utils/zoderrormessages'
 import {object,string} from 'zod'
+import { User } from '../models/usermodel';
 
  export const createUserValid=object({
     name:string({
@@ -121,6 +122,12 @@ export interface userres{
     error?:any
 }
 
+export interface resResetPassword {
+    sucess?:boolean,
+    error?:any
+    message?:string
+}
+
 
 export interface tokendata {
     id:mongoose.Schema.Types.ObjectId
@@ -128,11 +135,27 @@ export interface tokendata {
 
 
 
+export interface resSinglerUser {
+    sucess:boolean,
+    user:User
+}
+
+export interface resAllUser {
+    sucess:boolean,
+    users: Array<User>
+}
+export interface resForgetPassword {
+    sucess?:boolean,
+    error?:any
+    message?:string
+}
 
 
-
-
-
+export interface resupdatetPassword {
+    sucess?:boolean,
+    error?:any
+    message?:string
+}
 
 
 
