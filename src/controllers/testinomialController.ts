@@ -4,28 +4,36 @@ import { Request,Response,RequestHandler } from "express"
 import { ParamId,  resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData } from "../interfaces/testinomial.interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import TestinomialModel, { Testinomial } from "../models/testinomialmodel"
+import cloudinary from 'cloudinary';
 
 
 // create testinomial 
-export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<any,any,testinomialData>,res:Response<resMe>)=>{
+export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<any,any,testinomialData>,res:Response)=>{
     try {
         const {name,description}=req.body
         if(!name || !description){
             throw new Error("all the fields are necessary")
         }else{
+            const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
+            cloud.then(async(data:any) => {  
+                console.log(data)
+                console.log(data.secure_url)     
             let testinomial=await TestinomialModel.create({
                 name,
                 description,
                 image:{
-                    url:"String",
-                    public_id:"String"
+                    url:data.secure_url,
+                    public_id:data.public_id,
                 }
             })
             res.status(200).json({
                 sucess:false,
-                message:"testinomial created"
-                
+                message:"testinomial created",
+                testinomial
             })
+        }).catch((err:any)=>{
+            console.log(err)
+        })
         }
     } catch (error:any) {
         throw new Error(error)
@@ -99,7 +107,6 @@ export const getAllTestinomial:RequestHandler=asyncHandler(async(req:Request,res
 })
 
 // delete the testinomial
-
 export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request<ParamId>,res:Response<resMe>)=>{
        try {
         const id=req.params.id
@@ -108,14 +115,19 @@ export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request<Par
         if(!checkTest){
             throw new Error("testinomial not found")
         }
-        const testinomoial=await TestinomialModel.findByIdAndDelete(id)
-        if(!testinomoial){
-            throw new Error("testinommial doesnt exists")
-        }
-        res.status(200).json({
-            sucess:true,
-            message:"deleted sucessfully"
+        const deleteImage=cloudinary.v2.uploader.destroy(checkTest.image.public_id).then(async()=>{
+            const testinomoial=await TestinomialModel.findByIdAndDelete(id)
+            if(!testinomoial){
+                throw new Error("testinommial doesnt exists")
+            }
+            res.status(200).json({
+                sucess:true,
+                message:"deleted sucessfully"
+            })
+        }).catch((err)=>{
+            throw new Error(err)
         })
+      
 
        } catch (error:any) {
         throw new Error(error)
@@ -129,7 +141,31 @@ export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request<Par
 
 
 
+export const changeTheUserImage=asyncHandler(async(req:Request,res:Response)=>{
+    try {
+        validateMongodbId(req.params.id)
+        const testinomial=await TestinomialModel.findById(req.params.id)
+        const destroy=await cloudinary.v2.uploader.destroy(testinomial.image.public_id).then(()=>{
+            const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
+            cloud.then(async(data:any)=>{
+                let updatedTes=await TestinomialModel.findByIdAndUpdate(req.params.id,{  image:{
+                    url:data.secure_url,
+                    public_id:data.public_id,
+                }},{new:true})
+                console.log(updatedTes)
+                res.status(200).json({
+                    updatedTes
+                })
+            })
+    
 
+        }).catch((err)=>{
+            console.log(err)
+        })
+    } catch (error:any) {
+        throw new Error(error.message)
+        
+    }
 
-
+})
 

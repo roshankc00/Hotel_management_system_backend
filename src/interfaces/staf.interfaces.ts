@@ -90,7 +90,7 @@ export const stafAchievementValid=object({
         required_error:ACHEIVEMENT_AND_POSITION_MESSAGE.REQUIRED_ACHEIVEMENT_MESSAGE,
         invalid_type_error:ACHEIVEMENT_AND_POSITION_MESSAGE.INVALID_ACHEIVEMENT_MESSAGE
     })
-})
+}).strict()
 
 
 export const stafPositionValid=object({
@@ -99,7 +99,7 @@ export const stafPositionValid=object({
         invalid_type_error:ACHEIVEMENT_AND_POSITION_MESSAGE.INVALID_POSITION_MESSAGE,
     })
 
-})
+}).strict()
 
 
 

@@ -4,32 +4,31 @@ import { Request,Response,RequestHandler } from "express"
 import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe } from "../interfaces/blog.interfaces"
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
+import cloudinary from 'cloudinary';
+import upload from '../middlewares/multer';
 
-export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request<any,any,blogData>,res:Response<resMe>)=>{
+export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async(req:Request<any,any,blogData>,res:Response)=>{
     try {
         const {title,description,tag}=req.body
-        if(!title || !description || !tag){
-            throw new Error("all the fields are necessary")
-        }else{
-            let blog=await BlogModel.create({
-                title,
-                description,
-                tag,
-                image:{
-                    url:"String",
-                    public_id:"String"
-                }
-                // this
-            })
-         res.status(200).json({
-            sucess:false,
-            message:"blog has been created"
-
-         })
-        }
+        console.log(req.file)
+        const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
+        cloud.then(async(data:any) => {
+        //   inserting user to the database
+        const blog=await BlogModel.create({
+            title,
+            description,
+            tag,
+            image:data.secure_url
+        })
+        res.status(200).json({
+            sucess:true,
+            message:"blog is sucessfully inserted to the database",
+            blog
+        })
+    
+    })      
     } catch (error:any) {
         throw new Error(error)
-        
     }
 
 })

@@ -18,9 +18,10 @@ const testinomialSchema=new mongoose.Schema<testiInput>({
 
     },
     image:{
-        public_id:String,
-        url:String
+        url:String,
+        public_id:String
     }
+   
 },{timestamps:true})
 
 

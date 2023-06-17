@@ -16,10 +16,7 @@ export interface resMe {
 export interface testinomialData {
     name:string,
     description:string,
-    image?:{
-        url:string,
-        public_id:string
-    }
+    image?:string
 
 }
 export interface testinomialUpdateData {
@@ -41,7 +38,7 @@ export interface image {
 export interface testiInput {
     name:string,
     description:string,
-    image:string,
+    image:image,
 }
 export interface testiDocument extends testiInput, mongoose.Document{
     createdAt:Date,

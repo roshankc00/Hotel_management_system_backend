@@ -8,7 +8,7 @@ import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
 import morgan from 'morgan'
-
+import cloudinary from 'cloudinary'
 // rest variables
 const app=express() 
 const PORT=env.PORT
@@ -16,6 +16,12 @@ const PORT=env.PORT
 // connecting to the database
 connectDb()
 
+// configuring the cloudinary 
+cloudinary.v2.config({
+    cloud_name:env.CLOUDINARY_CLIENT_NAME,
+    api_key:env.CLOUDINARY_CLIENT_API,
+    api_secret:env.CLOUDINARY_CLIENT_SECRET
+})
 
 // all the middlewares
 app.use(express.json())
