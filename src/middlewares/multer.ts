@@ -1,5 +1,5 @@
 import multer from 'multer'
-
+import { Request,Response } from 'express'
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, `src/public/upload/`)
@@ -10,7 +10,20 @@ const storage = multer.diskStorage({
     }
   })
   
-  const upload = multer({ storage: storage })
+  const fileFilter=(req:Request,file:any,cb:any)=>{
+    if(file.mimetype==="image/jpeg" || file.mimetype==='image/png' || file.memetype==='image/jpg'){
+        cb(null,true)
+    }else{
+        cb(new Error("invalid file type"))
+    }
+
+  }
+  const upload = multer({ storage: storage,
+    limits:{
+        fieldSize:5*1024*1024
+    },
+    fileFilter
+})
 
 
   export default upload

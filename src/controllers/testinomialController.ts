@@ -20,16 +20,13 @@ export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<an
             })
             return 
         }else{
-            const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
-            cloud.then(async(data:any) => {  
-                console.log(data)
-                console.log(data.secure_url)     
+            const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
             let testinomial=await TestinomialModel.create({
                 name,
                 description,
                 image:{
-                    url:data.secure_url,
-                    public_id:data.public_id,
+                    url:cloud.secure_url,
+                    public_id:cloud.public_id,
                 }
             })
             res.status(200).json({
@@ -37,9 +34,8 @@ export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<an
                 message:"testinomial created",
                 testinomial
             })
-        }).catch((err:any)=>{
-            console.log(err)
-        })
+            
+          
         }
     } catch (error:any) {
         throw new Error(error)
@@ -131,23 +127,14 @@ export const deleteTestinomial:RequestHandler=asyncHandler(async(req:Request<Par
         if(!checkTest){
             throw new Error("testinomial not found")
         }
-        const deleteImage=cloudinary.v2.uploader.destroy(checkTest.image.public_id).then(async()=>{
-
-            const testinomoial=await TestinomialModel.findByIdAndDelete(id)
-            if(!testinomoial){
-                throw new Error("testinommial doesnt exists")
-            }
-            res.status(200).json({
-                sucess:true,
-                message:"deleted sucessfully",
-                testinomoial
-                
-            })
-        }).catch((err)=>{
-            throw new Error(err)
+        const deleteImage=await cloudinary.v2.uploader.destroy(checkTest.image.public_id)
+        const testinomoial=await TestinomialModel.findByIdAndDelete(id)
+        res.status(200).json({
+            sucess:true,
+            message:"deleted sucessfully",
+            testinomoial
+            
         })
-      
-
        } catch (error:any) {
         throw new Error(error)
         
@@ -164,24 +151,18 @@ export const changeTheUserImage=asyncHandler(async(req:Request,res:Response)=>{
     try {
         validateMongodbId(req.params.id)
         const testinomial=await TestinomialModel.findById(req.params.id)
-        const destroy=await cloudinary.v2.uploader.destroy(testinomial.image.public_id).then(()=>{
-            const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
-            cloud.then(async(data:any)=>{
-                let updatedTes=await TestinomialModel.findByIdAndUpdate(req.params.id,{  image:{
-                    url:data.secure_url,
-                    public_id:data.public_id,
-                }},{new:true})
-                console.log(updatedTes)
-               return  res.status(200).json({
-                    status:true,
-                    message:"blog created sucessfully"
-                })
-            }).catch((err:any)=>{console.log(err)})
-    
-
-        }).catch((err)=>{
-            console.log(err)
+        const destroy=await cloudinary.v2.uploader.destroy(testinomial.image.public_id)
+        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+        let updatedTes=await TestinomialModel.findByIdAndUpdate(req.params.id,{  image:{
+            url:cloud.secure_url,
+            public_id:cloud.public_id,
+        }},{new:true})
+        console.log(updatedTes)
+       return  res.status(200).json({
+            status:true,
+            message:"testinomial image changed sucessfully"
         })
+                      
     } catch (error:any) {
         throw new Error(error.message)
         

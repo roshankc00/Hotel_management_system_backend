@@ -23,20 +23,18 @@ export const createBlog:RequestHandler<any,any,blogData,any>= asyncHandler(async
                 })
                 return 
             }
-        const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
-        cloud.then(async(data:any)=>{
-            const blog=await BlogModel.create({
-                tag,
-                title,
-                description,
-                image:{
-                    url:data.secure_url,
-                    public_id:data.public_id,
-                }
-            })
-            res.send(blog)
+        //   uploading image to cloudinary
+        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+        const blog=await BlogModel.create({
+            tag,
+            title,
+            description,
+            image:{
+                url:cloud.secure_url,
+                public_id:cloud.public_id,
+            }
         })
-         
+        res.send(blog)
     } catch (error:any) {
         throw new Error(error)
     }
@@ -106,20 +104,12 @@ export const deleteBlog:RequestHandler=asyncHandler(async(req:Request<ParamId>,r
         }    
         console.log(blog)
         
-        let  deleteImage=cloudinary.v2.uploader.destroy(blog.image.public_id)
-        .then(async(data:any)=>{
-          
-       let vlog= await BlogModel.findByIdAndDelete(id)
+        let  deleteImage=await cloudinary.v2.uploader.destroy(blog.image.public_id)
+        let vlog= await BlogModel.findByIdAndDelete(id)
         res.status(200).json({
             sucess:true,
-            message:"blog deleted sucessfully",
-            blog
-            
+            message:"blog deleted sucessfully",         
             })
-         
-        }).catch((err)=>{
-            throw new Error(err)
-        })
       
     } catch (error:any) {
         throw new Error(error)
@@ -164,22 +154,18 @@ export const changeTheBlogImage=asyncHandler(async(req:Request,res:Response)=>{
     try {
         validateMongodbId(req.params.id)
         const blog=await BlogModel.findById(req.params.id)
-        const destroy=await cloudinary.v2.uploader.destroy(blog.image.public_id).then(()=>{
-            const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
-            cloud.then(async(data:any)=>{
-                let updatedTes=await BlogModel.findByIdAndUpdate(req.params.id,{  image:{
-                    url:data.secure_url,
-                    public_id:data.public_id,
-                }},{new:true})
-               return  res.status(200).json({
-                    status:true,
-                    message:"blog created sucessfully"
-                })
-            }).catch((err:any)=>{console.log(err)})
-
-        }).catch((err)=>{
-            console.log(err)
-        })
+        const destroy=await cloudinary.v2.uploader.destroy(blog.image.public_id)
+        const cloud:any = cloudinary.v2.uploader.upload(req.file.path)
+            let updatedTes=await BlogModel.findByIdAndUpdate(req.params.id,{  image:{
+                url:cloud.secure_url,
+                public_id:cloud.public_id,
+            }},{new:true})
+           return  res.status(200).json({
+                status:true,
+                message:"blog created sucessfully",
+                updatedTes
+            })
+            
     } catch (error:any) {
         throw new Error(error.message)
         
