@@ -24,10 +24,10 @@ const userSchema=new mongoose.Schema<UserInput>({
     password:{
         type:String,
         required:[true,validateUserModel.REQUIRED_PASSWORD_MESSAGE],
-        // match:[
-        //     /"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"/,
-        //     validateUserModel.VALID_PASSWORD_MESSAGE
-        // ]
+        match:[
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+            validateUserModel.VALID_PASSWORD_MESSAGE
+        ]
     },
     role:{
         type:String,

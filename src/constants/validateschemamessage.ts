@@ -99,10 +99,37 @@ export const validateFoodMessage={
     REQUIRED_NAME_MESSAGE:"name field id required",
     MIN_NAME_MESSAGE:"name must be of atleast 3 charecter",
     
-    REQUIRED_PRICE_MESSAGE:"name field id required",
-
-    REQUIRED_DISCOUNT_MESSAGE:"name field id required",
-
+    REQUIRED_PRICE_MESSAGE:"Price  field id required",
     
+    REQUIRED_DISCOUNT_MESSAGE:"Discount field id required",
+    
+    REQUIRED_PRICEAFTERDISCOUNT_MESSAGE:"price after discount field id required",
+    
+    REQUIRED_SLUG_MESSAGE:"slug field id required",
+    
+    REQUIRED_CATEGORY_MESSAGE:"category field id required",
+    MIN_CATEGORY_MESSAGE:"CATEGORY must be of atleast 3 charecter",
+    
+    MAX_RATING_MESSAGE:"rate must be less than 10 charecter",
+    MIN_RATING_MESSAGE:"rate must be atleast 1 charecter",
+ 
+
+}
+
+
+
+export const  validateMeetingMessage ={
+    REQUIRED_TITLE_MESSAGE:"title field id required",
+    MAX_TITLE_MESSAGE:"title must be less than 50 charecter",
+    MIN_TITLE_MESSAGE:"title must be atleast 10 charecter",
+    
+    REQUIRED_DESCRIPTION_MESSAGE:"description field id required",
+    MAX_DESCRIPTION_MESSAGE:"description must be less than 500 charecter",
+    MIN_DESCRIPTION_MESSAGE:"description must be of  atleast 10 charecter",
+    
+    REQUIRED_TIME_MESSAGE:"time field id required",
+    
+    REQUIRED_VENUE_MESSAGE:"venue field id required",
+    MIN_VENUE_MESSAGE:"venue must be atleast 3 charecter",
 
 }
