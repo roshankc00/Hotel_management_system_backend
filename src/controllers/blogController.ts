@@ -4,7 +4,7 @@ import { Request,Response,RequestHandler } from "express"
 import { AllBlog, ParamId, UpdateblogData, blogData, getBlog, resMe, validateCreateBlog, validateUpdateBlog } from '../interfaces/blog.interfaces';
 import BlogModel, { Blog, Blogs } from "../models/blogmodel"
 import validateMongodbId from "../utils/mongodbIdValidator"
-import cloudinary from 'cloudinary';
+import cloudinary from '../config/CloudinaryConfig';
 
 
 

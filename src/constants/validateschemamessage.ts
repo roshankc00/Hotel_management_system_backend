@@ -16,8 +16,8 @@ export const validateTestinomialMessage={
     REQUIRED_NAME_MESSAGE:"name field id required",
 
     REQUIRED_DESCRIPTION_MESSAGE:"description field id required",
-    MAX_DESCRIPTION_MESSAGE:"description must be less than 500",
-    MIN_DESCRIPTION_MESSAGE:"description must be atleast 10",
+    MAX_DESCRIPTION_MESSAGE:"description must be less than 500 charecter",
+    MIN_DESCRIPTION_MESSAGE:"description must be atleast 10 charecter",
 
 }
 
@@ -31,12 +31,12 @@ export const validateTestinomialMessage={
 
 
 export const validateStafMessage={
-    MAX_NAME_MESSAGE:"NAME must be less than 30",
-    MIN_NAME_MESSAGE:"NAME  must be atleast 5",
+    MAX_NAME_MESSAGE:"NAME must be less than 30 charecter",
+    MIN_NAME_MESSAGE:"NAME  must be atleast 5 charecter",
     REQUIRED_name_MESSAGE:"name  field id required",
 
-    MAX_address_MESSAGE:"address must be less than 30",
-    MIN_address_MESSAGE:"address  must be atleast 3",
+    MAX_address_MESSAGE:"address must be less than 30 charecter",
+    MIN_address_MESSAGE:"address  must be atleast 3 charecter",
     REQUIRED_address_MESSAGE:"address  field id required", 
 
     REQUIRED_age_MESSAGE:"age field id required",
@@ -56,13 +56,13 @@ export const validateStafMessage={
 
 export const validateRoomMessage={
     REQUIRED_DESCRIPTION_MESSAGE:"description field id required",
-    MAX_DESCRIPTION_MESSAGE:"description must be less than 500",
-    MIN_DESCRIPTION_MESSAGE:"description must be atleast 10",
+    MAX_DESCRIPTION_MESSAGE:"description must be less than 500 charecter",
+    MIN_DESCRIPTION_MESSAGE:"description must be atleast 10 charecter",
     
     
     REQUIRED_TITLE_MESSAGE:"title field id required",
-    MAX_TITLE_MESSAGE:"title must be less than 50",
-    MIN_TITLE_MESSAGE:"title must be atleast 10",
+    MAX_TITLE_MESSAGE:"title must be less than 50 charecter",
+    MIN_TITLE_MESSAGE:"title must be atleast 10 charecter",
     
     REQUIRED_PRICE_MESSAGE:"price field id required",
     
@@ -72,21 +72,37 @@ export const validateRoomMessage={
     REQUIRED_COMMENT_MESSAGE:"price field id required in rating field",
 
     REQUIRED_RATING_MESSAGE:"rate the product",
-    MAX_RATING_MESSAGE:"rate must be less than 10",
-    MIN_RATING_MESSAGE:"rate must be atleast 1",
+    MAX_RATING_MESSAGE:"rate must be less than 10 charecter",
+    MIN_RATING_MESSAGE:"rate must be atleast 1 charecter",
 }
 
 export const validateBlogMessage={
     REQUIRED_TITLE_MESSAGE:"title field id required",
-    MAX_TITLE_MESSAGE:"title must be less than 50",
-    MIN_TITLE_MESSAGE:"title must be atleast 10",
+    MAX_TITLE_MESSAGE:"title must be less than 50 charecter",
+    MIN_TITLE_MESSAGE:"title must be atleast 10 charecter",
 
     REQUIRED_DESCRIPTION_MESSAGE:"description field id required",
-    MAX_DESCRIPTION_MESSAGE:"description must be less than 500",
-    MIN_DESCRIPTION_MESSAGE:"description must be atleast 10",
+    MAX_DESCRIPTION_MESSAGE:"description must be less than 500 charecter",
+    MIN_DESCRIPTION_MESSAGE:"description must be of  atleast 10 charecter",
 
     REQUIRED_TAG_MESSAGE:"TAG field id required",
     MAX_TAG_MESSAGE:"TAG must be less than 10",
-    MIN_TAG_MESSAGE:"TAG must be atleast 3",
+    MIN_TAG_MESSAGE:"TAG must be of atleast 3 charecter ",
+
+}
+
+
+
+// foodmodel 
+export const validateFoodMessage={
+    
+    REQUIRED_NAME_MESSAGE:"name field id required",
+    MIN_NAME_MESSAGE:"name must be of atleast 3 charecter",
+    
+    REQUIRED_PRICE_MESSAGE:"name field id required",
+
+    REQUIRED_DISCOUNT_MESSAGE:"name field id required",
+
+    
 
 }

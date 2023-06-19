@@ -4,7 +4,7 @@ import { Request,Response,RequestHandler } from "express"
 import { ParamId,  changeTestinomialImageRes,  createTestinomialresInterface,  deleteTestinomialresInterface,  resMe, testinomialData, testinomialUpdateData, testinomialgetAllData, testinomialgetData, updatedTestinomialresInterface, validateCreateTestinomial, validateUpdateTestinomial } from "../interfaces/testinomial.interfaces"
 import validateMongodbId from "../utils/mongodbIdValidator"
 import TestinomialModel, { Testinomial } from "../models/testinomialmodel"
-import cloudinary from 'cloudinary';
+import cloudinary from '../config/CloudinaryConfig';
 
 
 // create testinomial 

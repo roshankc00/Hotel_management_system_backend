@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 import { validateRoomMessage } from "../constants/validateschemamessage";
 const roomSchema=new mongoose.Schema({
     title:{
@@ -13,6 +13,19 @@ const roomSchema=new mongoose.Schema({
         min:[10,validateRoomMessage.MIN_DESCRIPTION_MESSAGE],
         max:[500,validateRoomMessage.MAX_DESCRIPTION_MESSAGE]
 
+    },
+    discountPer:{
+        type:Number,
+        required:true
+    },
+    priceAfterDiscount:{
+        type:Number,
+        requrired:true
+    },
+    
+    slug:{
+        type:String,
+        required:true
     },
     price:{
         type:Number,
@@ -41,3 +54,9 @@ const roomSchema=new mongoose.Schema({
     ]
 
 },{timestamps:true})
+
+
+export type Room =InferSchemaType <typeof roomSchema>
+
+const RoomModel=mongoose.model('Room',roomSchema)
+export default RoomModel 
