@@ -103,6 +103,30 @@ export const stafPositionValid=object({
 
 
 
+
+export interface createStafRes {
+    sucess?:boolean,
+    message?:string,
+    staf?:Staf,
+    error?:any
+    
+}
+
+
+
+export interface updateStafRes {
+    sucess?:boolean,
+    message?:string,
+    staf?:Staf,
+    error?:any
+
+}
+
+
+
+
+
+
 export interface stafData {
     name:String,
     address:string,
@@ -145,8 +169,6 @@ export interface allstaf{
     stafs:Array<Staf>
 
 }
-
-
 
 export interface stafInput {
     name:string,

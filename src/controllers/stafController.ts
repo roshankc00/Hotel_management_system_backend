@@ -4,6 +4,7 @@ import {
   achievement,
   allstaf,
   createStafInterfaceValid,
+  createStafRes,
   getStaf,
   promote,
   resMe,
@@ -11,6 +12,7 @@ import {
   stafData,
   stafPositionValid,
   updateStafInterfaceValid,
+  updateStafRes,
 } from "../interfaces/staf.interfaces";
 import StafModel from "../models/stafmodel";
 import validateMongodbId from "../utils/mongodbIdValidator";
@@ -21,7 +23,7 @@ import validateMongodbId from "../utils/mongodbIdValidator";
 
 // create the staf 
 export const createStaf: RequestHandler = asyncHandler(
-  async (req: Request<any, any, stafData, any>, res: Response<resMe>) => {
+  async (req: Request<any, any, stafData, any>, res: Response<createStafRes>) => {
     try {
       const { name, address, position, salary, email, phoneNumber, age } =
         req.body;
@@ -55,6 +57,7 @@ export const createStaf: RequestHandler = asyncHandler(
         res.status(200).json({
           sucess: true,
           message: "staf created sucessfully",
+          staf
         });
       }
     } catch (error: any) {
@@ -106,7 +109,7 @@ export const getAllStaf: RequestHandler = asyncHandler(
 
 // update the staf 
 export const updateStaf: RequestHandler = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response<updateStafRes>) => {
     try {
       const id: string = req.params.id;
       validateMongodbId(id);
@@ -131,6 +134,8 @@ export const updateStaf: RequestHandler = asyncHandler(
           new: true,
         });
         res.status(200).json({
+          sucess:true,
+          message:"staf updated sucessfully",
           staf,
         });
       }
@@ -229,7 +234,7 @@ export const addAcheivementStaf: RequestHandler = asyncHandler(
 
 // promote the staf
 export const promoteStaf: RequestHandler = asyncHandler(
-  async (req: Request<any, any, promote>, res: Response<resMe>) => {
+  async (req: Request<any, any, promote>, res: Response) => {
     try {
       const id: string = req.params.id;
       validateMongodbId(id);
@@ -259,6 +264,7 @@ export const promoteStaf: RequestHandler = asyncHandler(
         res.status(200).json({
           sucess: true,
           message: "staf has been promoted",
+          staf
         });
       }
     } catch (error: any) {

@@ -39,7 +39,29 @@ export const validateUpdateTestinomial=object({
 
 
 
+export interface createTestinomialresInterface {
+    sucess?:boolean,
+    message?:string,
+    testinomial?:Testinomial,
+    error?:any
+}
+export interface updatedTestinomialresInterface {
+    sucess?:boolean,
+    message?:string,
+    updatedTestinomial?:Testinomial,
+    error?:any
+}
+export interface deleteTestinomialresInterface {
+    sucess:boolean,
+    message:string
+}
 
+
+export interface changeTestinomialImageRes {
+    status:boolean,
+    message:string,
+    updatedTes:Testinomial
+}
 
 
 
