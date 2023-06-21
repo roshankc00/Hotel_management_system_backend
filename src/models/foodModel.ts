@@ -1,5 +1,7 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import { validateFoodMessage } from '../constants/validateschemamessage';
+import slugify from "slugify";
+import { NextFunction } from "express";
 
 const foodSchema=new mongoose.Schema({
     name:{
@@ -21,33 +23,34 @@ const foodSchema=new mongoose.Schema({
     },
     slug:{
         type:String,
-        required:[true,validateFoodMessage.REQUIRED_SLUG_MESSAGE]
     },
     category:{
         type:String,
         requried:[true,validateFoodMessage.REQUIRED_CATEGORY_MESSAGE],
         min:[3,validateFoodMessage.MIN_CATEGORY_MESSAGE]
     },
-    review:[{
-        user:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User"
-        },
-        comment:{
-            type:String,
-        },
-        rating:{
-            type:Number,
-            min:[1,validateFoodMessage.MIN_RATING_MESSAGE],
-            max:[10,validateFoodMessage.MAX_RATING_MESSAGE]
-        }
 
-    }]
-
-})
+ 
 
 
+},{timestamps:true})
 export type Food=InferSchemaType<typeof foodSchema>
+
+
+foodSchema.pre(
+    "save",
+    async function(this:Food,next){
+        this.slug=slugify(this.name.toLowerCase())
+        console.log(this.slug) 
+        next()
+    }
+)
+
+
+
+
+
+
 
 const FoodModel=mongoose.model('Food',foodSchema)
 export default FoodModel 

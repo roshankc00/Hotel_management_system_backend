@@ -7,8 +7,9 @@ import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
 import testinomialRoute from './routes/testinomiaRoute'
 import userRoute from './routes/userRoute'
+import foodRoute from './routes/foodRoute'
 import morgan from 'morgan'
-import cloudinary from 'cloudinary'
+
 // rest variables
 const app=express() 
 const PORT=env.PORT
@@ -17,11 +18,7 @@ const PORT=env.PORT
 connectDb()
 
 // configuring the cloudinary 
-cloudinary.v2.config({
-    cloud_name:env.CLOUDINARY_CLIENT_NAME,
-    api_key:env.CLOUDINARY_CLIENT_API,
-    api_secret:env.CLOUDINARY_CLIENT_SECRET
-})
+
 
 // all the middlewares
 app.use(express.json())
@@ -34,7 +31,12 @@ app.use('/api/v1',blogRoute)
 app.use('/api/v1',stafRoute)
 app.use('/api/v1',testinomialRoute)
 app.use('/api/v1',userRoute)
+app.use('/api/v1',foodRoute)
 
+
+app.get('/',(req,res)=>{
+    throw new Error("wow wow")
+})
 app.use(notFound)
 app.use(errorHandler)
 

@@ -2,12 +2,12 @@ import asyncHandler from "express-async-handler"
 import { Request,Response,RequestHandler } from "express"
 import UserModel from "../models/usermodel"
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
 import env from '../utils/validateEnv'
-import { tokendata, createUser, userres, loginuser, createLoginValid, CustomRequest ,createUserValid, forgetPasswordValid, resetPasswordValid, updatePasswordValid} from '../interfaces/user.interfaces';
+import { tokendata, createUser, userres, loginuser, createLoginValid, CustomRequest ,createUserValid, forgetPasswordValid, resetPasswordValid, updatePasswordValid, resSinglerUser, resAllUser, resForgetPassword, resResetPassword, resupdatetPassword} from '../interfaces/user.interfaces';
 import validateMongodbId from "../utils/mongodbIdValidator"
 import crypto from 'crypto';
 import sendEmail from "../utils/sendEmail"
+import { resMe } from "../interfaces/testinomial.interfaces"
 
 // register the user 
 export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,createUser>,res:Response<userres>)=>{
@@ -103,7 +103,7 @@ export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Res
 
 
 // get a single user 
-export const getASingleUser=asyncHandler(async(req:Request,res:Response)=>{
+export const getASingleUser=asyncHandler(async(req:Request,res:Response<resSinglerUser>)=>{
     try {
         validateMongodbId(req.params.id);
         const user=await UserModel.findById(req.params.id)
@@ -114,9 +114,7 @@ export const getASingleUser=asyncHandler(async(req:Request,res:Response)=>{
                 sucess:true,
                 user
             })
-        }
-
-        
+        }        
     } catch (error:any) {
         throw new Error(error)
         
@@ -129,7 +127,7 @@ export const getASingleUser=asyncHandler(async(req:Request,res:Response)=>{
 
 // get all the user 
 
-export const getAllUsers=asyncHandler(async(req:Request,res:Response)=>{
+export const getAllUsers=asyncHandler(async(req:Request,res:Response<resAllUser>)=>{
     try {
         const users=await UserModel.find({})
         res.status(200).json({
@@ -146,7 +144,7 @@ export const getAllUsers=asyncHandler(async(req:Request,res:Response)=>{
 
 // update the user role
 
-export const updateRole=asyncHandler(async(req:Request,res:Response)=>{
+export const updateRole=asyncHandler(async(req:Request,res:Response<resMe>)=>{
     try {
         validateMongodbId(req.params.id)
         if(req.body.role!=="user" || req.body.role!=="admin"){
@@ -158,6 +156,10 @@ export const updateRole=asyncHandler(async(req:Request,res:Response)=>{
         }
         user.role=req.body.role
         await user.save()
+        res.status(200).json({
+            sucess:true,
+            message:"role updated sucessfully"
+        })
     } catch (error:any) {
         throw new Error(error)
         
@@ -167,7 +169,7 @@ export const updateRole=asyncHandler(async(req:Request,res:Response)=>{
 
 
 // delete the user 
-export const deleteUser=asyncHandler(async(req:CustomRequest,res)=>{
+export const deleteUser=asyncHandler(async(req:CustomRequest,res:Response<resMe>)=>{
     try {
         const id:string=req.user.id
         const deleteUser=await UserModel.findByIdAndDelete(req.user._id)
@@ -183,7 +185,7 @@ export const deleteUser=asyncHandler(async(req:CustomRequest,res)=>{
 })
 
 // forgetPassword
-export const forgetPassword=asyncHandler(async(req:Request,res:Response)=>{
+export const forgetPassword=asyncHandler(async(req:Request,res:Response<resForgetPassword>)=>{
     try {
         const {email}=req.body
              // validating the req.body type 
@@ -232,7 +234,7 @@ export const forgetPassword=asyncHandler(async(req:Request,res:Response)=>{
 
 
 // reset password 
-export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
+export const resetPassword=asyncHandler(async(req:Request,res:Response<resResetPassword>)=>{
     try {
         const {newPassword,confirmPassword}=req.body
                  // validating the req.body type 
@@ -280,7 +282,7 @@ export const resetPassword=asyncHandler(async(req:Request,res:Response)=>{
 
 
 // UPDATE the password 
-export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
+export const updatePassword=asyncHandler(async(req:Request,res:Response<resupdatetPassword>)=>{
     try {
         const {email,newPassword,oldPassword}=req.body
              // validating the req.body type 
@@ -294,10 +296,6 @@ export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
                  return 
                 //  validation ends here 
              }
-
-
-
-
         const user=await UserModel.findOne({email})
         if(!user){
             throw new Error("user email doesnt match")
@@ -308,7 +306,7 @@ export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
         await user.save()
         res.status(200).json({
             sucess:true,
-            user
+            message:"password updated sucssfully"
         })
        }else{
         res.status(200).json({
@@ -323,3 +321,9 @@ export const updatePassword=asyncHandler(async(req:Request,res:Response)=>{
     }
 
 })
+
+
+
+
+
+
