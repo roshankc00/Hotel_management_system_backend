@@ -78,12 +78,18 @@ export const updateFood=asyncHandler(async(req:any,res:Response)=>{
         if(!food){
             throw new Error("food doesnt exists")
         }
+        if(!req.body.discountPer){
+            req.body.discountPer=food.discountPer           
+        }
+        if(!req.body.price){
+            req.body.price=food.price                    
+        }
         const updFood=await FoodModel.findByIdAndUpdate(id,req.body,{new:true})
 
         res.status(200).json({
             sucess:true,
             message:"food updated sucessfully",
-            updFood
+            updatedFood:updFood
         })
         
     } catch (error:any) {

@@ -22,11 +22,6 @@ const roomSchema=new mongoose.Schema({
         type:Number,
         requrired:true
     },
-    
-    slug:{
-        type:String,
-        required:true
-    },
     price:{
         type:Number,
         required:[true,validateRoomMessage.REQUIRED_PRICE_MESSAGE],
@@ -56,7 +51,15 @@ const roomSchema=new mongoose.Schema({
 },{timestamps:true})
 
 
+
+
 export type Room =InferSchemaType <typeof roomSchema>
+
+
+
+
+
+
 
 const RoomModel=mongoose.model('Room',roomSchema)
 export default RoomModel 
