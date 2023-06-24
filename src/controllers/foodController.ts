@@ -4,11 +4,24 @@ import FoodModel from '../models/foodModel';
 import validateMongodbId from '../utils/mongodbIdValidator';
 import { CustomRequest } from '../interfaces/user.interfaces';
 import cloudinary from '../config/CloudinaryConfig';
+import { CustomResponse, addReviewFood, createFoodResponse, deleteFoodResponse, getAllFoodResponse, getFoodsByCategoryResponse, getSingleFoodResponse, updateFoodResponse, validateCategoryFood, validateCreateFood, validateReview, validateUpdateFood } from '../interfaces/foodInterface';
 
 // create the food 
-export const createFood=asyncHandler(async(req:Request,res)=>{
+export const createFood=asyncHandler(async(req:Request,res:Response<createFoodResponse>)=>{
     try {
         const {name,price,discountPer,category}=req.body;
+             // validating the req.body type 
+             let  result=validateCreateFood.safeParse(req.body)
+             let wow:any=JSON.stringify(result,null,2)
+              wow=JSON.parse(wow)
+             if(!wow.success){
+                 res.status(400).json({
+                     error:wow
+                 })
+                 return 
+             }
+
+
         const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
         let discountaPrice:number=(discountPer*price)/100;
         let priceAfterDiscount:number=price-discountaPrice;
@@ -37,13 +50,13 @@ export const createFood=asyncHandler(async(req:Request,res)=>{
 
 
 // get all the foods 
-export const getALLFoods=asyncHandler(async(req,res:any)=>{
+export const getALLFoods=asyncHandler(async(req:Request,res:CustomResponse)=>{
     try {
         const foods=await FoodModel.find({})
-        let allfoods=res.filterData
+        let allFoods=res.filterData
         res.status(200).json({
             sucess:true,
-            allfoods
+            allFoods
             
         })
 
@@ -54,7 +67,7 @@ export const getALLFoods=asyncHandler(async(req,res:any)=>{
 })
 
 // get  a single food 
-export const getSingleFood=asyncHandler(async(req:Request,res:Response)=>{
+export const getSingleFood=asyncHandler(async(req:Request,res:Response<getSingleFoodResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -67,7 +80,6 @@ export const getSingleFood=asyncHandler(async(req:Request,res:Response)=>{
                 food
             })
         }
-        
     } catch (error:any) {
         throw new Error(error)
         
@@ -77,10 +89,23 @@ export const getSingleFood=asyncHandler(async(req:Request,res:Response)=>{
 
 
 // update the food
-export const updateFood=asyncHandler(async(req:any,res:Response)=>{
+export const updateFood=asyncHandler(async(req:Request,res:Response<updateFoodResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
+             // validating the req.body type 
+             let  result=validateUpdateFood.safeParse(req.body)
+             let wow:any=JSON.stringify(result,null,2)
+              wow=JSON.parse(wow)
+             if(!wow.success){
+                 res.status(400).json({
+                     error:wow
+                 })
+                 return 
+             }
+
+
+        
         const food=await FoodModel.findById(id)
         if(!food){
             throw new Error("food doesnt exists")
@@ -108,7 +133,7 @@ export const updateFood=asyncHandler(async(req:any,res:Response)=>{
 
 
 // delete the food 
-export const deleteFood=asyncHandler(async(req:Request,res:Response)=>{
+export const deleteFood=asyncHandler(async(req:Request,res:Response<deleteFoodResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -120,7 +145,7 @@ export const deleteFood=asyncHandler(async(req:Request,res:Response)=>{
         const delFood=await FoodModel.findByIdAndDelete(id)
         res.status(200).json({
             sucess:true,
-            messagea:"deleted sucess fully"
+            message:"deleted sucess fully"
         })
         
     } catch (error:any) {
@@ -132,9 +157,19 @@ export const deleteFood=asyncHandler(async(req:Request,res:Response)=>{
 
 
 // get a product by category
-export const getFoodsByCategory=asyncHandler(async(req,res)=>{
+export const getFoodsByCategory=asyncHandler(async(req:Request,res:Response<getFoodsByCategoryResponse>)=>{
     try {
         let {category}=req.body
+                     // validating the req.body type 
+                     let  result=validateCategoryFood.safeParse(req.body)
+                     let wow:any=JSON.stringify(result,null,2)
+                      wow=JSON.parse(wow)
+                     if(!wow.success){
+                         res.status(400).json({
+                             error:wow
+                         })
+                         return 
+                     }
         let foods=await FoodModel.find({category})
         if(!foods){
             throw new Error("no food found")
@@ -149,8 +184,9 @@ export const getFoodsByCategory=asyncHandler(async(req,res)=>{
     }
 })
 
+
 // get foods  with name price discountper priceAfterDiscount
-export const foodsWithLimitedField=asyncHandler(async(req,res)=>{
+export const foodsWithLimitedField=asyncHandler(async(req:Request,res:Response)=>{
     try {
         const product=await FoodModel.find({}).select('name price discountPer priceAfterDiscount')
         let length=product.length
@@ -171,13 +207,25 @@ export const foodsWithLimitedField=asyncHandler(async(req,res)=>{
 
 // add review the food 
 
-export const addReviewFood=asyncHandler(async(req:any,res)=>{
+export const addReviewToFood=asyncHandler(async(req:any,res:Response<addReviewFood>)=>{
     try {
-        const {rating,comment,id}=req.body
-        validateMongodbId(id)
+        const {rating,comment,foodId}=req.body
+        validateMongodbId(foodId)
+                    // validating the req.body type 
+                    let  result=validateReview.safeParse(req.body)
+                    let wow:any=JSON.stringify(result,null,2)
+                     wow=JSON.parse(wow)
+                    if(!wow.success){
+                        res.status(400).json({
+                            error:wow
+                        })
+                        return 
+                    }
+       
+
         let alreadyReviewed=false
         let ind;
-        const food=await FoodModel.findById(id)
+        const food=await FoodModel.findById(foodId)
         if(!food){
             throw new Error("the food doesnt exists")
         }
@@ -224,7 +272,6 @@ export const changeTheFoodImage=asyncHandler(async(req,res:any)=>{
             url:cloud.secure_url,
             public_id:cloud.public_id,
         }
-        console.log(food)
         
             await food.save()
            return  res.status(200).json({

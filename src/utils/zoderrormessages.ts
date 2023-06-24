@@ -84,3 +84,37 @@ export const meetingZodMessage={
     
 
 }
+
+export const foodZodMessage= {
+    INVALID_NAME_MESSAGE:"name must be string",
+    REQUIRED_NAME_MESSAGE:'name is required',
+
+    INVALID_PRICE_MESSAGE:"price must be number",
+    REQUIRED_PRICE_MESSAGE:'price is required',
+
+    INVALID_DISCOUNTPER_MESSAGE:"price must be number",
+    REQUIRED_DISCOUNTPER_MESSAGE:'price is required',
+    
+    INVALID_CATEGORY_MESSAGE:"price must be string",
+    REQUIRED_CATEGORY_MESSAGE:'price is string',
+
+
+}
+
+export const categoryFoodZodMessage={
+    INVALID_CATEGORY_MESSAGE:"category must be number",
+    REQUIRED_CATEGORY_MESSAGE:'category is required',
+
+}
+
+export const RattingZodMessage={
+    INVALID_RATING_MESSAGE:"RATING must be number",
+    REQUIRED_RATING_MESSAGE:'RATING is required',
+
+    INVALID_COMMENT_MESSAGE:"COMMENT must be string",
+    REQUIRED_COMMENT_MESSAGE:'COMMENT is required',
+
+    INVALID_FOODID_MESSAGE:"FOODID must be string",
+    REQUIRED_FOODID_MESSAGE:'FOODID is required',
+
+}
