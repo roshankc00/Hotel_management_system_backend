@@ -1,5 +1,7 @@
 import  swaggerJsdoc from 'swagger-jsdoc'
 import env from '../utils/validateEnv'
+
+
 const options = {
   failOnError:true, //weather or not to throw error when parsing errors 
   definition: {
@@ -13,8 +15,8 @@ const options = {
       version: '1.0.0',
     },
     components: {
-      securitySchemes:{
-        barerAuth:{
+      securitySchemes: {
+        barerAuth: {
           type:'http',
           schema:'bearer', 
           bearerFormat:"JWT",
@@ -28,7 +30,7 @@ const options = {
 
   },
 
-  apis: ['routes/*.js'], 
+  apis: ['src/routes/*.ts'], 
 };
 
 export default  swaggerJsdoc(options);

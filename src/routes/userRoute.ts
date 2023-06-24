@@ -4,7 +4,6 @@ import { checkAuth, checkRole } from '../middlewares/authmiddleware';
 
 
 const router=express.Router()
-
 /**
  * @swagger
  * /user/register:
@@ -39,6 +38,7 @@ const router=express.Router()
  *           
  * 
 */
+
 router.post('/user/register',registerUser)
 
 

@@ -18,6 +18,8 @@ import MeetRoute from './routes/meetingRoute'
 import SwaggerRoute from './routes/swaggerRoute'
 import morgan from 'morgan'
 
+
+
 // rest variables
 const app=express() 
 const PORT=env.PORT
@@ -37,8 +39,6 @@ app.use(hpp())
 app.use(cors())
 
 // all the routes
-
-
 app.use('/api/v1',blogRoute)
 app.use('/api/v1',stafRoute)
 app.use('/api/v1',testinomialRoute)
@@ -47,8 +47,6 @@ app.use('/api/v1',foodRoute)
 app.use('/api/v1',roomRoute)
 app.use('/api/v1',MeetRoute)
 app.use('/swagger',SwaggerRoute)
-
-
 app.use(notFound)
 app.use(errorHandler)
 
