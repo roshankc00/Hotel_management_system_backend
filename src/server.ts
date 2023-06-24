@@ -9,6 +9,7 @@ import testinomialRoute from './routes/testinomiaRoute'
 import roomRoute from './routes/roomRoute'
 import userRoute from './routes/userRoute'
 import foodRoute from './routes/foodRoute'
+import MeetRoute from './routes/meetingRoute'
 import morgan from 'morgan'
 
 // rest variables
@@ -34,7 +35,7 @@ app.use('/api/v1',testinomialRoute)
 app.use('/api/v1',userRoute)
 app.use('/api/v1',foodRoute)
 app.use('/api/v1',roomRoute)
-
+app.use('/api/v1',MeetRoute)
 
 
 app.use(notFound)

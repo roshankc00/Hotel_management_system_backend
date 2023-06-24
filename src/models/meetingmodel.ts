@@ -14,10 +14,6 @@ const meetingSchema=new mongoose.Schema({
         min:[10,validateMeetingMessage.MIN_DESCRIPTION_MESSAGE],
         max:[500,validateMeetingMessage.MAX_DESCRIPTION_MESSAGE],
     },
-    time:{
-        type:Date,
-        required:[true,validateMeetingMessage.REQUIRED_TIME_MESSAGE]
-    },
     venue:{
         type:String,
         required:[true,validateMeetingMessage.REQUIRED_VENUE_MESSAGE],
