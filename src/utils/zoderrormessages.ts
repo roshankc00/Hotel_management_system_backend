@@ -118,3 +118,23 @@ export const RattingZodMessage={
     REQUIRED_FOODID_MESSAGE:'FOODID is required',
 
 }
+
+
+// room
+export const roomZodMessages={
+    INVALID_TITLE_MESSAGE:"title must be string",
+    REQUIRED_TITLE_MESSAGE:'title is required',
+
+     INVALID_DESCRIPTION_MESSAGE:"description must be string",
+    REQUIRED_DECRIPTION_MESSAGE:'description is required',
+
+    INVALID_PRICE_MESSAGE:"PRICE must be integer",
+    REQUIRED_PRICE_MESSAGE:'PRICE is required',
+
+     INVALID_DISCOUNTPER_MESSAGE:"DISCOUNTPER  must be INTEGER",
+    REQUIRED_DISCOUNTPER_MESSAGE:'DISCOUNTPER is required',
+
+    INVALID_CATEGORY_MESSAGE:"CATEGORY must be string",
+    REQUIRED_CATEGORY_MESSAGE:' CATEGORY is required',
+
+}

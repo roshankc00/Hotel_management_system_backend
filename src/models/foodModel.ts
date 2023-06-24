@@ -50,6 +50,8 @@ const foodSchema=new mongoose.Schema({
     },
 }
     ,{timestamps:true})
+
+    
 export type Food=InferSchemaType<typeof foodSchema>
 
 

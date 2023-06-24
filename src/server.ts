@@ -2,6 +2,11 @@ import express from 'express'
 import 'dotenv/config'
 import env from './utils/validateEnv'
 import connectDb from './config/connectDb'
+import helmet from 'helmet'
+import mongoSanitize from 'express-mongo-sanitize'
+import hpp from 'hpp'
+import cors from 'cors'
+import xss from 'xss'
 import { errorHandler, notFound } from './middlewares/errorHandler'
 import blogRoute from './routes/blogRoute'
 import stafRoute from './routes/stafRoute'
@@ -26,6 +31,10 @@ connectDb()
 // all the middlewares
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(helmet())
+app.use(mongoSanitize())
+app.use(hpp())
+app.use(cors())
 
 // all the routes
 

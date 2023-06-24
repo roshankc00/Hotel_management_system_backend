@@ -40,7 +40,7 @@ export const createMeeting=asyncHandler(async(req:Request,res:Response<createMee
 
 })
 
-export const getSingleMeeting=asyncHandler(async(req,res:Response<getSingleMeetingResponse>)=>{
+export const getSingleMeeting=asyncHandler(async(req:Request,res:Response<getSingleMeetingResponse>)=>{
     try {
         let id=req.params.id
         validateMongodbId(id)
@@ -58,7 +58,7 @@ export const getSingleMeeting=asyncHandler(async(req,res:Response<getSingleMeeti
     }
 })
 
-export const getAllMeetings=asyncHandler(async(req,res:Response<getAllMeetingResponse>)=>{
+export const getAllMeetings=asyncHandler(async(req:Request,res:Response<getAllMeetingResponse>)=>{
     try {
         const meetings=await MeetingModel.find({})
         if(!meetings){
@@ -76,7 +76,7 @@ export const getAllMeetings=asyncHandler(async(req,res:Response<getAllMeetingRes
     }
 })
 
-export const deleteMeeting=asyncHandler(async(req,res:Response<getDeleteMeetingResponse>)=>{
+export const deleteMeeting=asyncHandler(async(req:Request,res:Response<getDeleteMeetingResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -97,7 +97,7 @@ export const deleteMeeting=asyncHandler(async(req,res:Response<getDeleteMeetingR
 })
 
 
-export const updateMeeting=asyncHandler(async(req,res:Response<updateMeetingResponse>)=>{
+export const updateMeeting=asyncHandler(async(req:Request,res:Response<updateMeetingResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)

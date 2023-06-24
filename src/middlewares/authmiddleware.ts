@@ -8,7 +8,7 @@ import { CustomRequest } from '../interfaces/user.interfaces'
 export const checkAuth=asyncHandler(async(req:CustomRequest,res:Response,next:NextFunction)=>{
     try {
         if(!req.headers.authorization){
-            throw new Error("no token is attach to")
+            throw new Error("no token is attach to header")
         }
         let checktoken=req.headers.authorization.startsWith('Bearer')
         if(!checktoken){

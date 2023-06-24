@@ -1,13 +1,27 @@
 import asyncHandler from "express-async-handler";
 import RoomModel from "../models/roommodel";
+import { Response,Request } from "express";
 import validateMongodbId from "../utils/mongodbIdValidator";
 import cloudinary from "../config/CloudinaryConfig";
+import { CustomResponse, addReviewResponse, changeRoomImageResponse, createRoomResponse, deleteRoomResponse, getASingleRoomResponse, getRoomsByCategoryResponse, updateRoomResponse, validateCreateRoom, validateUpdateRoom } from "../interfaces/roominterface";
+import { validateCategoryFood, validateReview } from "../interfaces/foodInterface";
+import { CustomRequest } from "../interfaces/user.interfaces";
 
-export const createRoom=asyncHandler(async(req,res)=>{
+export const createRoom=asyncHandler(async(req:Request,res:Response<createRoomResponse>)=>{
     try {
         const {title,description,discountPer,price,category}=req.body
-        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+                    // validating the req.body type 
+                    let  result=validateCreateRoom.safeParse(req.body)
+                    let wow:any=JSON.stringify(result,null,2)
+                     wow=JSON.parse(wow)
+                    if(!wow.success){
+                        res.status(400).json({
+                            error:wow
+                        })
+                        return 
+                    }
 
+        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
         let disAmount:number=(discountPer*price)/100;
         let priceAfterDiscount:number=price-disAmount
         const room=await RoomModel.create({
@@ -33,7 +47,9 @@ export const createRoom=asyncHandler(async(req,res)=>{
     }
 })
 
-export const getASingleRoom=asyncHandler(async(req,res)=>{
+
+
+export const getASingleRoom=asyncHandler(async(req:Request,res:Response<getASingleRoomResponse>)=>{
     try {
         const id:string=req.params.id
         validateMongodbId(id)
@@ -52,7 +68,8 @@ export const getASingleRoom=asyncHandler(async(req,res)=>{
 })
 
 
-export const getAllRooms=asyncHandler(async(req,res:any)=>{
+
+export const getAllRooms=asyncHandler(async(req:Request,res:CustomResponse)=>{
     try {
         const rooms=await RoomModel.find({})
         if(!rooms){
@@ -73,10 +90,24 @@ export const getAllRooms=asyncHandler(async(req,res:any)=>{
 
 
 
-export const updateRooms=asyncHandler(async(req,res)=>{
+export const updateRooms=asyncHandler(async(req:Request,res:Response<updateRoomResponse>)=>{
     try {
         const id:string=req.params.id
         validateMongodbId(id)
+        
+            // validating the req.body type 
+            let  result=validateUpdateRoom.safeParse(req.body)
+            let wow:any=JSON.stringify(result,null,2)
+             wow=JSON.parse(wow)
+            if(!wow.success){
+                res.status(400).json({
+                    error:wow
+                })
+                return 
+            }
+
+
+
         let room=await RoomModel.findById(id)
         if(!room){
             throw new Error("room not found")
@@ -102,9 +133,21 @@ export const updateRooms=asyncHandler(async(req,res)=>{
 
 
 // get the rooms by category
-export const getRoomsByCategory=asyncHandler(async(req,res)=>{
+export const getRoomsByCategory=asyncHandler(async(req:Request,res:Response<getRoomsByCategoryResponse>)=>{
     try {
         let {category}=req.body
+            // validating the req.body type 
+            let  result=validateCategoryFood.safeParse(req.body)
+            let wow:any=JSON.stringify(result,null,2)
+             wow=JSON.parse(wow)
+            if(!wow.success){
+                res.status(400).json({
+                    error:wow
+                })
+                return 
+            }  
+        
+
         let rooms=await RoomModel.find({category})
         if(!rooms){
             throw new Error("no food found")
@@ -119,7 +162,7 @@ export const getRoomsByCategory=asyncHandler(async(req,res)=>{
 })
 
 // delete the room 
-export const deleteRoom=asyncHandler(async(req,res)=>{
+export const deleteRoom=asyncHandler(async(req:Request,res:Response<deleteRoomResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -140,11 +183,26 @@ export const deleteRoom=asyncHandler(async(req,res)=>{
     }
 })
 
+
+
 // add the review 
-export const addReviewRoom=asyncHandler(async(req:any,res)=>{
+export const addReviewRoom=asyncHandler(async(req:CustomRequest,res:Response<addReviewResponse>)=>{
     try {
         const {rating,comment,id}=req.body
         validateMongodbId(id)
+            // validating the req.body type 
+            let  result=validateReview.safeParse(req.body)
+            let wow:any=JSON.stringify(result,null,2)
+             wow=JSON.parse(wow)
+            if(!wow.success){
+                res.status(400).json({
+                    error:wow
+                })
+                return 
+            }
+
+
+
         let alreadyReviewed=false
         const room=await RoomModel.findById(id)
         if(!room){
@@ -175,7 +233,10 @@ export const addReviewRoom=asyncHandler(async(req:any,res)=>{
     }
 })
 
-export const changeRoomImage=asyncHandler(async(req:any,res:any)=>{
+
+
+
+export const changeRoomImage=asyncHandler(async(req:Request,res:Response<changeRoomImageResponse>)=>{
     try {
         validateMongodbId(req.params.id)
         const room=await RoomModel.findById(req.params.id)
@@ -191,10 +252,9 @@ export const changeRoomImage=asyncHandler(async(req:any,res:any)=>{
         }
         
             await room.save()
-           return  res.status(200).json({
-                status:true,
+            res.status(200).json({
+                sucess:true,
                 message:"image updated sucessfully",
-                room
                 
             })
             

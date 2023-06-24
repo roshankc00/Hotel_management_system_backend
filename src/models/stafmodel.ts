@@ -33,10 +33,12 @@ const stafSchema=new mongoose.Schema({
             /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
             validateStafMessage.VALID_email_MESSAGE
         ],
+        
     },
     age:{
         type:Number,
         required:[true,validateStafMessage.REQUIRED_age_MESSAGE]
+
         },
     acheiveaments:[{
         type:String
