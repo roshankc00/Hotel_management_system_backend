@@ -1,19 +1,27 @@
 import asyncHandler from "express-async-handler";
 import RoomModel from "../models/roommodel";
 import validateMongodbId from "../utils/mongodbIdValidator";
+import cloudinary from "../config/CloudinaryConfig";
 
 export const createRoom=asyncHandler(async(req,res)=>{
     try {
-        const {title,desciption,discountPer,price,category}=req.body
+        const {title,description,discountPer,price,category}=req.body
+        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+
         let disAmount:number=(discountPer*price)/100;
         let priceAfterDiscount:number=price-disAmount
         const room=await RoomModel.create({
             title,
-            desciption,
+            description,
             discountPer,
             price,
             category,
-            priceAfterDiscount
+            priceAfterDiscount,
+            image:{
+                url:cloud.secure_url,
+                public_id:cloud.public_id,
+            }
+
         })
         res.status(200).json({
             sucess:true,
@@ -22,7 +30,6 @@ export const createRoom=asyncHandler(async(req,res)=>{
         })
     } catch (error:any) {
         throw new Error(error)
-        
     }
 })
 
@@ -45,15 +52,17 @@ export const getASingleRoom=asyncHandler(async(req,res)=>{
 })
 
 
-export const getAllRooms=asyncHandler(async(req,res)=>{
+export const getAllRooms=asyncHandler(async(req,res:any)=>{
     try {
         const rooms=await RoomModel.find({})
         if(!rooms){
             throw new Error("no rooms found")
         }
+
+        let allRooms=res.filterData
         res.status(200).json({
             sucess:true,
-            rooms
+            allRooms
         })
     } catch (error:any) {
         throw new Error(error)
@@ -69,14 +78,14 @@ export const updateRooms=asyncHandler(async(req,res)=>{
         const id:string=req.params.id
         validateMongodbId(id)
         let room=await RoomModel.findById(id)
+        if(!room){
+            throw new Error("room not found")
+        }
         if(!req.body.discountPer){
             req.body.discountPer=room.discountPer           
         }
         if(!req.body.price){
             req.body.price=room.price                    
-        }
-        if(!room){
-            throw new Error("room not found")
         }
         let disAmt=(req.body.discountPer*req.body.price)/100
          req.body.priceAfterDiscount=req.body.price-disAmt
@@ -92,7 +101,7 @@ export const updateRooms=asyncHandler(async(req,res)=>{
 })
 
 
-// get the room by category
+// get the rooms by category
 export const getRoomsByCategory=asyncHandler(async(req,res)=>{
     try {
         let {category}=req.body
@@ -109,17 +118,17 @@ export const getRoomsByCategory=asyncHandler(async(req,res)=>{
     }
 })
 
-
+// delete the room 
 export const deleteRoom=asyncHandler(async(req,res)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
-
         const room=await RoomModel.findById(id)
         if(!room){
             throw new Error("room not found")
         }
-        const udpRoom=await RoomModel.findByIdAndDelete(id)
+        const destroy=await cloudinary.v2.uploader.destroy(room.image.public_id)
+        const delRoom=await RoomModel.findByIdAndDelete(id)
         res.status(200).json({
             sucess:true,
             message:"room deleted sucessfully",
@@ -131,3 +140,68 @@ export const deleteRoom=asyncHandler(async(req,res)=>{
     }
 })
 
+// add the review 
+export const addReviewRoom=asyncHandler(async(req:any,res)=>{
+    try {
+        const {rating,comment,id}=req.body
+        validateMongodbId(id)
+        let alreadyReviewed=false
+        const room=await RoomModel.findById(id)
+        if(!room){
+            throw new Error("the food doesnt exists")
+        }
+        // const destroy=await cloudinary.v2.uploader.destroy(room.image)
+        room.review.map(async(el,ind)=>{
+            if(el.user.toString()===req.user._id.toString()){
+                room.review.splice(ind,1)
+                alreadyReviewed=true
+            }
+        })
+        room.review.push({
+            user:req.user._id,
+            comment,
+            rating
+        }) 
+      await room.save()
+      res.status(200).json({
+        sucess:true,
+        message:"review added sucessfully",
+        room
+      })
+      
+
+    } catch (error:any) {
+        throw new Error(error)
+    }
+})
+
+export const changeRoomImage=asyncHandler(async(req:any,res:any)=>{
+    try {
+        validateMongodbId(req.params.id)
+        const room=await RoomModel.findById(req.params.id)
+        if(!room){
+            throw new Error('food not found')
+        }
+        const destroy=await cloudinary.v2.uploader.destroy(room.image.public_id)
+        const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+        console.log(cloud)
+        room.image={
+            url:cloud.secure_url,
+            public_id:cloud.public_id,
+        }
+        
+            await room.save()
+           return  res.status(200).json({
+                status:true,
+                message:"image updated sucessfully",
+                room
+                
+            })
+            
+    } catch (error:any) {
+        throw new Error(error.message)
+        
+    }
+
+
+})

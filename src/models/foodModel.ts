@@ -1,5 +1,5 @@
 import mongoose,{InferSchemaType} from "mongoose";
-import { validateFoodMessage } from '../constants/validateschemamessage';
+import { validateFoodMessage, validateRoomMessage } from '../constants/validateschemamessage';
 import slugify from "slugify";
 import { NextFunction } from "express";
 
@@ -29,11 +29,27 @@ const foodSchema=new mongoose.Schema({
         requried:[true,validateFoodMessage.REQUIRED_CATEGORY_MESSAGE],
         min:[3,validateFoodMessage.MIN_CATEGORY_MESSAGE]
     },
-
- 
-
-
-},{timestamps:true})
+    review:[{
+        user:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        },
+        comment:{
+            type:String,
+        },
+        rating:{
+            type:Number,
+            min:[1,validateRoomMessage.MIN_RATING_MESSAGE],
+            max:[10,validateRoomMessage.MAX_RATING_MESSAGE]
+        }
+    }
+    ],
+    image:{
+        url:String,
+        public_id:String
+    },
+}
+    ,{timestamps:true})
 export type Food=InferSchemaType<typeof foodSchema>
 
 

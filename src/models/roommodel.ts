@@ -7,7 +7,7 @@ const roomSchema=new mongoose.Schema({
         min:[3,validateRoomMessage.MIN_TITLE_MESSAGE],
         max:[3,validateRoomMessage.MAX_TITLE_MESSAGE],
     },
-    desciption:{
+    description:{
         type:String,
         required:[true,validateRoomMessage.REQUIRED_DESCRIPTION_MESSAGE],
         min:[10,validateRoomMessage.MIN_DESCRIPTION_MESSAGE],
@@ -30,6 +30,10 @@ const roomSchema=new mongoose.Schema({
         type:String,
         required:[true,"title is required"],
         min:[3,"enter the valid Category"]
+    },
+    image:{
+        url:String,
+        public_id:String
     },
     review:[{
         user:{
