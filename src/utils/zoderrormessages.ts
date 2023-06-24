@@ -69,3 +69,18 @@ export const CREATE_TESTINOMIAL ={
     INVALID_TAG_MESSAGE:"description must be string",
     REQUIRED_TAG_MESSAGE:'description is required'
 }
+
+// meeting
+export const meetingZodMessage={
+    INVALID_TITLE_MESSAGE:"title must be string",
+    REQUIRED_TITLE_MESSAGE:'title is required',
+
+     INVALID_DESCRIPTION_MESSAGE:"description must be string",
+    REQUIRED_DECRIPTION_MESSAGE:'description is required',
+
+    INVALID_VENUE_MESSAGE:" venue must be string",
+    REQUIRED_VENUE_MESSAGE:' venue is required',
+
+    
+
+}

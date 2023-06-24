@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose,{InferSchemaType} from "mongoose";
 import { validateMeetingMessage } from "../constants/validateschemamessage";
 
 const meetingSchema=new mongoose.Schema({
@@ -22,6 +22,8 @@ const meetingSchema=new mongoose.Schema({
 
 },{timestamps:true})
 
+
+export type Meeting=InferSchemaType<typeof meetingSchema>
 
 
 

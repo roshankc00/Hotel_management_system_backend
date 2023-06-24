@@ -1,13 +1,27 @@
 import asyncHandler from 'express-async-handler'
+import { Request,Response } from 'express'
 import MeetingModel from '../models/meetingmodel'
 import validateMongodbId from '../utils/mongodbIdValidator'
+import { validateMeetingMessage } from '../constants/validateschemamessage'
+import { createMeetingResponse, getAllMeetingResponse, getDeleteMeetingResponse, getSingleMeetingResponse, updateMeetingResponse, validateCreateMeeting, validateUpdateMeeting } from '../interfaces/meetingInterface'
 
-export const createMeeting=asyncHandler(async(req,res)=>{
+export const createMeeting=asyncHandler(async(req:Request,res:Response<createMeetingResponse>)=>{
     try {
         let {title,description,venue}=req.body
         if(!title || !description || !venue){
             throw new Error("all the fields are required")
         }
+               // validating the req.body type 
+               let  result=validateCreateMeeting.safeParse(req.body)
+               let wow:any=JSON.stringify(result,null,2)
+                wow=JSON.parse(wow)
+               if(!wow.success){
+                   res.status(400).json({
+                       error:wow
+                   })
+                   return 
+               }
+
         let meeting=await MeetingModel.create({
             title,
             description,
@@ -26,7 +40,7 @@ export const createMeeting=asyncHandler(async(req,res)=>{
 
 })
 
-export const getSingleMeeting=asyncHandler(async(req,res)=>{
+export const getSingleMeeting=asyncHandler(async(req,res:Response<getSingleMeetingResponse>)=>{
     try {
         let id=req.params.id
         validateMongodbId(id)
@@ -44,7 +58,7 @@ export const getSingleMeeting=asyncHandler(async(req,res)=>{
     }
 })
 
-export const getAllMeetings=asyncHandler(async(req,res)=>{
+export const getAllMeetings=asyncHandler(async(req,res:Response<getAllMeetingResponse>)=>{
     try {
         const meetings=await MeetingModel.find({})
         if(!meetings){
@@ -62,7 +76,7 @@ export const getAllMeetings=asyncHandler(async(req,res)=>{
     }
 })
 
-export const deleteMeeting=asyncHandler(async(req,res)=>{
+export const deleteMeeting=asyncHandler(async(req,res:Response<getDeleteMeetingResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
@@ -83,11 +97,21 @@ export const deleteMeeting=asyncHandler(async(req,res)=>{
 })
 
 
-export const updateMeeting=asyncHandler(async(req,res)=>{
+export const updateMeeting=asyncHandler(async(req,res:Response<updateMeetingResponse>)=>{
     try {
         const id=req.params.id
         validateMongodbId(id)
         const meeting=await MeetingModel.findById(id)
+               // validating the req.body type 
+               let  result=validateUpdateMeeting.safeParse(req.body)
+               let wow:any=JSON.stringify(result,null,2)
+                wow=JSON.parse(wow)
+               if(!wow.success){
+                   res.status(400).json({
+                       error:wow
+                   })
+                   return 
+               }
         if(!meeting){
             throw new Error("meeting not found")
         }
