@@ -81,6 +81,45 @@ router.get('/testinomial/:id',getASingleTestinomial)
  *        description: internal server Error
 */
 router.get('/testinomials',getAllTestinomial)
+/**
+ * @swagger
+ * /testinomial/{id}:
+ *   put:
+ *     summary: update the testinomial.
+ *     tags: [Testinomial]
+*     parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       desciption: mongo Id required
+ *       schema:
+ *          type: string
+ *     requestBody:
+ *      content:
+ *       multipart/form-data:
+ *         schema:
+ *          type: object
+ *          properties:
+ *            name:
+ *             type: string
+ *            description:
+ *             type: string
+ * 
+ *          example:
+ *              name: Roshan karki 
+ *              description: the best experience ever,
+ *     responses:
+ *       200:
+ *        description: testinomial info with  testinomial updated message
+ *       400:
+ *        description: type error 
+ *       500:
+ *        description: internal server Error
+ *
+ * 
+ *           
+ * 
+*/
 router.put('/testinomial/:id',updateTestinomial)
 /**
  * @swagger

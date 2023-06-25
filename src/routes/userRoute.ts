@@ -20,6 +20,7 @@ const router=express.Router()
  *     summary: Register the user.
  *     tags: [User]
  *     requestBody:
+ *      required: true
  *      content:
  *       application/json:
  *         schema:

@@ -11,6 +11,7 @@ const router=express.Router()
  *     summary: Register the staf.
  *     tags: [Staf]
  *     requestBody:
+ *      required: true
  *      content:
  *       application/json:
  *         schema:
@@ -170,6 +171,60 @@ router.put('/staf/achievement/:id',addAcheivementStaf)
  *        description: internal server Error
 */
 router.put('/staf/promote/:id',promoteStaf)
+
+/**
+ * @swagger
+ * /staf/{id}:
+ *   put:
+ *     summary: update the staf.
+ *     tags: [Staf]
+*     parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       desciption: mongo Id required
+ *       schema:
+ *          type: string
+ *     requestBody:
+ *      content:
+ *       application/json:
+ *         schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *             type: string
+ *            name:
+ *             type: string
+ *            address:
+ *             type: string 
+ *            position:
+ *             type: string 
+ *            age:
+ *             type: number 
+ *            phoneNumber:
+ *             type: number 
+ *            salary:
+ *             type: number 
+ *          example:
+ *              name: Roshan karki 
+ *              email: roshankc@gmail.com
+ *              phoneNumber: 9847582627
+ *              age: 45
+ *              salary: 40000
+ *              position: manager
+ *              address: nayamill
+ *     responses:
+ *       200:
+ *        description: staf info with message staf updated sucessfully 
+ *       400:
+ *        description: staf  must be unique 
+ *       500:
+ *        description: internal server Error
+ *
+ * 
+ *           
+ * 
+*/
 router.put('/staf/:id',updateStaf)
 
 export default router

@@ -10,6 +10,7 @@ const router=express.Router()
  *     summary: Register the Metting.
  *     tags: [Meeting]
  *     requestBody:
+ *      required: true
  *      content:
  *       application/json:
  *         schema:
@@ -86,6 +87,48 @@ router.get('/meeting/:id',checkAuth,getSingleMeeting)
  *        description: internal server Error
 */
 router.delete('/meeting/:id',checkAuth,deleteMeeting)
+
+/**
+ * @swagger
+ * /meeting/{id}:
+ *   put:
+ *     summary: update the meeting.
+ *     tags: [Meeting]
+*     parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       desciption: mongo Id required
+ *       schema:
+ *          type: string
+ *     requestBody:
+ *      content:
+ *       application/json:
+ *         schema:
+ *          type: object
+ *          properties:
+ *            title:
+ *             type: string
+ *            description:
+ *             type: string
+ *            venue:
+ *             type: string 
+ *          example:
+ *              title: motivation
+ *              description: help to uplift the status of company
+ *              venue: Hotel laxmi
+ *     responses:
+ *       200:
+ *        description: testinomial info with  testinomial meeting message
+ *       400:
+ *        description: type error 
+ *       500:
+ *        description: internal server Error
+ *
+ * 
+ *           
+ * 
+*/
 
 router.put('/meeting/:id',checkAuth,checkRole('admin'),updateMeeting)
 /**
