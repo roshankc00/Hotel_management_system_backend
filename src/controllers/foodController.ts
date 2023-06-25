@@ -10,6 +10,7 @@ import { CustomResponse, addReviewFood, createFoodResponse, deleteFoodResponse, 
 export const createFood=asyncHandler(async(req:Request,res:Response<createFoodResponse>)=>{
     try {
         let  {name,price,discountPer,category}=req.body;
+        category=category.toLowerCase()
         req.body.price=Number(price)
         req.body.discountPer=Number(discountPer)
         price=Number(price)
@@ -59,6 +60,8 @@ export const createFood=asyncHandler(async(req:Request,res:Response<createFoodRe
 })
 
 
+
+
 // get all the foods 
 export const getALLFoods=asyncHandler(async(req:Request,res:CustomResponse)=>{
     try {
@@ -96,6 +99,8 @@ export const getSingleFood=asyncHandler(async(req:Request,res:Response<getSingle
     }
 
 })
+
+
 
 
 // update the food
@@ -142,6 +147,8 @@ export const updateFood=asyncHandler(async(req:Request,res:Response<updateFoodRe
 
 
 
+
+
 // delete the food 
 export const deleteFood=asyncHandler(async(req:Request,res:Response<deleteFoodResponse>)=>{
     try {
@@ -168,6 +175,9 @@ export const deleteFood=asyncHandler(async(req:Request,res:Response<deleteFoodRe
     }
 
 })
+
+
+
 
 
 // get a product by category
@@ -199,6 +209,9 @@ export const getFoodsByCategory=asyncHandler(async(req:Request,res:Response<getF
 })
 
 
+
+
+
 // get foods  with name price discountper priceAfterDiscount
 export const foodsWithLimitedField=asyncHandler(async(req:Request,res:Response)=>{
     try {
@@ -219,8 +232,9 @@ export const foodsWithLimitedField=asyncHandler(async(req:Request,res:Response)=
 
 
 
-// add review the food 
 
+
+// add review the food 
 export const addReviewToFood=asyncHandler(async(req:any,res:Response<addReviewFood>)=>{
     try {
         const {rating,comment,foodId}=req.body
@@ -268,6 +282,9 @@ export const addReviewToFood=asyncHandler(async(req:any,res:Response<addReviewFo
         throw new Error(error)
     }
 })
+
+
+
 
 
 

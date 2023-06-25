@@ -114,7 +114,7 @@ router.delete('/staf/:id',deleteStaf)
 /**
  * @swagger
  * /staf/achievement/{id}:
- *   put:
+ *   post:
  *     summary: add achievement of the staf.
  *     tags: [Staf]
  *     parameters:
@@ -124,7 +124,8 @@ router.delete('/staf/:id',deleteStaf)
  *       desciption: mongo Id required
  *       schema:
  *          type: string
-*     requestBody:
+ *     requestBody:
+  *      required: true
  *      content:
  *       application/json:
  *         schema:
@@ -140,7 +141,7 @@ router.delete('/staf/:id',deleteStaf)
  *       500:
  *        description: internal server Error
 */
-router.put('/staf/achievement/:id',addAcheivementStaf)
+router.post('/staf/achievement/:id',addAcheivementStaf)
 /**
  * @swagger
  * /staf/promote/{id}:

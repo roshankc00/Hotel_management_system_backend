@@ -67,7 +67,7 @@ router.post('/meeting',checkAuth,checkRole('admin'),createMeeting)
 router.get('/meeting/:id',checkAuth,getSingleMeeting)
 /**
  * @swagger
- * /meeting/delete/{id}:
+ * /meeting/{id}:
  *   delete:
  *     summary: delete  the .meeting
  *     tags: [Meeting]
