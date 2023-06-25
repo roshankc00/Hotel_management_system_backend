@@ -4,6 +4,48 @@ import upload from '../middlewares/multer';
 
 const router=express.Router()
 
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Testinomial:
+ *       type: object
+ *       required:
+ *         -name
+ *         -description
+ *         -image
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the User
+ *         description:
+ *           type: string
+ *           description: description of the good quality
+ *         image:
+ *           type: object
+ *           description: includes the url and the public id 
+ *       example:
+ *         name: ROshan karki  
+ *         description: the best resturant 
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @swagger
@@ -166,10 +208,9 @@ router.delete('/testinomial/:id',deleteTestinomial)
  *            image:
  *             type: string
  *             format: binary
- *             description: Number  of the bootcamp creater 
  *     responses:
  *       200:
- *        description: testinomial created sucessfully
+ *        description: testinoial info with message image updated  sucessfully
  *       400:
  *        description: type error 
  *       500:

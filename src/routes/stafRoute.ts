@@ -3,6 +3,74 @@ import { checkAuth } from "../middlewares/authmiddleware"
 
 const express=require('express')
 const router=express.Router()
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Staf:
+ *       type: object
+ *       required:
+ *         -name
+ *         -email
+ *         -age
+ *         -address
+ *         -position
+ *         -salary
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the User
+ *         email:
+ *           type: string
+ *           description: email  of the staf 
+ *         address:
+ *           type: string
+ *           description: address of the staf 
+ *         position:
+ *           type: string
+ *           description: position of the staf 
+ *         salary:
+ *           type: number 
+ *           description: salary of the staf
+ *         age:
+ *           type: number 
+ *           description: age of the staf 
+ *         acheivements:
+ *           type: Array
+ *           description: acheivement  of the staf
+ *         phoneNumber:
+ *           type: number
+ *           description: Phone Number of the staf
+
+ *       example:
+ *         name: ROshan karki  
+ *         email: roshankc813@gmail.com
+ *         address: Nayamill-01-Butwal
+ *         postition: Manager
+ *         salary: 100000
+ *         age: 20
+ *         acheivements: ["best worker","best employee of 2009"]
+ *         phoneNumber: 98475981627
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @swagger

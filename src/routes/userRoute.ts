@@ -6,6 +6,45 @@ import { checkAuth, checkRole } from '../middlewares/authmiddleware';
 const router=express.Router()
 
 
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         -name
+ *         -description
+ *         -email
+ *         -careers
+ *         -averageCost
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the User
+ *         email:
+ *           type: string
+ *           description: email  of the user
+ *         password:
+ *           type: string
+ *           description: password of the user 
+ *         role:
+ *           type: string
+ *           description: role of the user admin or user by default user 
+ *         resetDateExpire:
+ *           type: date
+ *           description: Date expire in 10 min for forget pass expire 
+ *         resetPasswordToken:
+ *           type: string
+ *           description: token for the forget password
+ *       example:
+ *         name: ROshan karki  
+ *         email: roshankc813@gmail.com
+ *         password: dfn@4Esn
+ *         role: "admin"
+ *         resetPasswordToken: enfjei3imsdz3002-o
+ *         resetDateExpire: 2023-06-05T20:10:09.534+00:00
+*/
 
 
 

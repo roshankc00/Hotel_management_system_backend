@@ -3,6 +3,60 @@ import { createMeeting, deleteMeeting, getAllMeetings, getSingleMeeting, updateM
 import { checkAuth, checkRole } from '../middlewares/authmiddleware'
 const router=express.Router()
 
+
+
+
+
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Meeting:
+ *       type: object
+ *       required:
+ *         -title
+ *         -venue
+ *         -description
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: title  of the Meeting
+ *         description:
+ *           type: string
+ *           description: description of meeting 
+ *         venue:
+ *           type: string
+ *           description: location of the meeting 
+ *       example:
+ *         title: employee welfare
+ *         description: emplement the different  way of selling  
+ *         venue: Hotel rampati 
+ 
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @swagger
  * /meeting:
