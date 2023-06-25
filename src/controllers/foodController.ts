@@ -9,8 +9,14 @@ import { CustomResponse, addReviewFood, createFoodResponse, deleteFoodResponse, 
 // create the food 
 export const createFood=asyncHandler(async(req:Request,res:Response<createFoodResponse>)=>{
     try {
-        const {name,price,discountPer,category}=req.body;
-             // validating the req.body type 
+        let  {name,price,discountPer,category}=req.body;
+        req.body.price=Number(price)
+        req.body.discountPer=Number(discountPer)
+        price=Number(price)
+        discountPer=Number(discountPer)
+        console.log(req.body)
+        console.log(req.file)
+            //  validating the req.body type 
              let  result=validateCreateFood.safeParse(req.body)
              let wow:any=JSON.stringify(result,null,2)
               wow=JSON.parse(wow)
@@ -20,8 +26,7 @@ export const createFood=asyncHandler(async(req:Request,res:Response<createFoodRe
                  })
                  return 
              }
-
-
+        try {
         const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
         let discountaPrice:number=(discountPer*price)/100;
         let priceAfterDiscount:number=price-discountaPrice;
@@ -41,6 +46,11 @@ export const createFood=asyncHandler(async(req:Request,res:Response<createFoodRe
             sucess:true,
             food
         })
+    } catch (error:any) {
+        res.status(400).send(error)
+    }
+        
+
     } catch (error:any) {
         throw new Error(error)
         
@@ -141,6 +151,7 @@ export const deleteFood=asyncHandler(async(req:Request,res:Response<deleteFoodRe
         if(!food){
             throw new Error("food doesnt exists")
         }
+        try {
         const destroy=await cloudinary.v2.uploader.destroy(food.image.public_id)
         const delFood=await FoodModel.findByIdAndDelete(id)
         res.status(200).json({
@@ -148,6 +159,9 @@ export const deleteFood=asyncHandler(async(req:Request,res:Response<deleteFoodRe
             message:"deleted sucess fully"
         })
         
+    } catch (error:any) {
+        res.status(400).send(error)
+    }
     } catch (error:any) {
         throw new Error(error)
         
@@ -258,13 +272,14 @@ export const addReviewToFood=asyncHandler(async(req:any,res:Response<addReviewFo
 
 
 // update the image 
-export const changeTheFoodImage=asyncHandler(async(req,res:any)=>{
+export const changeTheFoodImage=asyncHandler(async(req:Request,res:Response)=>{
     try {
         validateMongodbId(req.params.id)
         const food=await FoodModel.findById(req.params.id)
         if(!food){
             throw new Error('food not found')
         }
+        try {
         const destroy=await cloudinary.v2.uploader.destroy(food.image.public_id)
         const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
         console.log(cloud)
@@ -274,13 +289,15 @@ export const changeTheFoodImage=asyncHandler(async(req,res:any)=>{
         }
         
             await food.save()
-           return  res.status(200).json({
+            res.status(200).json({
                 status:true,
                 message:"image updated sucessfully",
                 food
                 
             })
-            
+        } catch (error:any) {
+            res.status(400).send(error)
+        }
     } catch (error:any) {
         throw new Error(error.message)
         

@@ -11,4 +11,5 @@ router.put('/blog/:id',updateBlog)
 router.delete('/blog/:id',deleteBlog)
 router.put('/blog/changeimage/:id',upload.single('image'),deleteBlog)
 
+
 export default router 

@@ -16,19 +16,24 @@ export const createTestinomial:RequestHandler= asyncHandler(async(req:Request<an
          wow=JSON.parse(wow)
         if(!wow.success){
             res.status(400).json({
-                error:wow
+                error:wow 
             })
             return 
         }else{
-            const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
-            let testinomial=await TestinomialModel.create({
+            console.log("wow")
+
+               //   uploading image to cloudinary
+               const cloud:any = await cloudinary.v2.uploader.upload(req.file.path)
+               console.log(cloud)
+               const testinomial=await TestinomialModel.create({
                 name,
                 description,
                 image:{
                     url:cloud.secure_url,
                     public_id:cloud.public_id,
                 }
-            })
+               })
+            console.log("wow")
             res.status(200).json({
                 sucess:false,
                 message:"testinomial created",

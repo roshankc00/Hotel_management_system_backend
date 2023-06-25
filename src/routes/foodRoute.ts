@@ -7,7 +7,7 @@ import upload from '../middlewares/multer'
 import { Food } from '../models/foodModel';
 const router=express.Router()
 
-router.post('/food/create',checkAuth,upload.single('image'),createFood)
+router.post('/food/create',upload.single('image'),createFood)
 router.get('/foods',filterResults(FoodModel),getALLFoods)
 router.delete('/food/:id',checkAuth,checkRole('admin'),deleteFood)
 router.get('/food/:id',getSingleFood)
