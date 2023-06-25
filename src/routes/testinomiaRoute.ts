@@ -25,7 +25,6 @@ const router=express.Router()
  *            image:
  *             type: string
  *             format: binary
- *             description: Number  of the bootcamp creater 
  * 
  *          example:
  *              name: Roshan karki 
@@ -180,8 +179,6 @@ router.delete('/testinomial/:id',deleteTestinomial)
  *           
  * 
 */
-
-
 router.put('/testinomial/updatepic/:id',upload.single('image'),changeTheUserImage)
 
 export default router 
