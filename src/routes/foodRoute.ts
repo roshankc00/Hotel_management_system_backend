@@ -7,6 +7,58 @@ import upload from '../middlewares/multer'
 import { Food } from '../models/foodModel';
 const router=express.Router()
 
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Food:
+ *       type: object
+ *       required:
+ *         -name
+ *         -price
+ *         -discountPer
+ *         -category
+ *         -image 
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the food 
+ *         price:
+ *           type: number 
+ *           description: price of the food 
+ *         priceAfterDiscount:
+ *           type: number 
+ *           description: price after discount for the food 
+ *         discountPer:
+ *           type: number 
+ *           description: discount percentage 
+ *         category:
+ *           type: string  
+ *           description: catgory of the food 
+ *         slug:
+ *           type: string  
+ *           description: slug of the food name  
+ *         image:
+ *           type: object
+ *           description: includes the url and the public id 
+ *       example:
+ *         name: ham-burger
+ *         price: 10000
+ *         discountPer: 10
+ *         priceAfterDisount: 199
+ *         slug: ham-burger
+ *         category: burger
+ *         review: object of the rating number and the comment and the user info
+ *         image: the object of the image url and the public id 
+
+*/
+
+
+
+
+
+
+
 
 /**
  * @swagger
@@ -89,7 +141,7 @@ router.delete('/food/:id',deleteFood)
  * @swagger
  * /food/{id}:
  *   get:
- *     summary: get a single the single.
+ *     summary: get a single the food.
  *     tags: [Food]
   *     parameters:
  *     - in: path

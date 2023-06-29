@@ -36,6 +36,20 @@ export const validateUpdateTestinomial=object({
 
 
 
+export interface testinomialInterface extends Document{
+    name:string,
+    description:string,
+    image:image
+}
+
+
+
+
+
+
+
+
+
 
 
 

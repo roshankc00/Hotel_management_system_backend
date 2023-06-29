@@ -3,7 +3,7 @@ import { Blog, Blogs } from "../models/blogmodel"
 import { object, string } from "zod"
 import { CREATE_BLOG } from "../utils/zoderrormessages"
 
-
+import { Document } from "mongoose"
 
 
 
@@ -28,6 +28,20 @@ export const validateCreateBlog=object({
 })
 .strict()
 
+
+
+interface image {
+    url:string,
+    public_id:string
+}
+
+export interface BlogInterface extends Document {
+    tag:string,
+    title:string,
+    description:string,
+    image:image
+
+}
 
 
 

@@ -3,7 +3,7 @@ import { Response, response } from "express";
 import { RattingZodMessage, categoryFoodZodMessage, foodZodMessage } from "../utils/zoderrormessages";
 import { Food } from "../models/foodModel";
 import { filterResults } from '../middlewares/filter_sort_pagination';
-
+import mongoose, { Document } from "mongoose";
 
 export const validateCreateFood= object({
     name:string({
@@ -24,6 +24,29 @@ export const validateCreateFood= object({
     }),
 }).strict()
 
+
+interface review {
+    user:mongoose.Schema.Types.ObjectId,
+    comment:string,
+    rating:number
+}
+interface image {
+    url:string,
+    public_id:string
+}
+
+export interface foodInterface extends Document {
+    name:string,
+    price:number,
+    discountPer:number,
+    priceAfterDiscount:number,
+    slug:string,
+    category:string,
+    review:review
+    image:image
+    
+
+}
 
 
 export const validateUpdateFood= object({

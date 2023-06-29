@@ -1,7 +1,8 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import { validateMeetingMessage } from "../constants/validateschemamessage";
+import { meetingInterface } from "../interfaces/meetingInterface";
 
-const meetingSchema=new mongoose.Schema({
+const meetingSchema=new mongoose.Schema<meetingInterface>({
     title:{
         type:String,
         required:[true,validateMeetingMessage.REQUIRED_TITLE_MESSAGE],
@@ -27,5 +28,5 @@ export type Meeting=InferSchemaType<typeof meetingSchema>
 
 
 
-const MeetingModel=mongoose.model('Meeting',meetingSchema)
+const MeetingModel=mongoose.model<meetingInterface>('Meeting',meetingSchema)
 export default MeetingModel

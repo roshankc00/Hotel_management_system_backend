@@ -1,10 +1,10 @@
 import mongoose,{InferSchemaType} from 'mongoose';
 import { validateTestinomialMessage } from '../constants/validateschemamessage';
-import { testiDocument, testiInput } from '../interfaces/testinomial.interfaces';
+import { testiDocument, testiInput, testinomialInterface } from '../interfaces/testinomial.interfaces';
 
 
 
-const testinomialSchema=new mongoose.Schema<testiInput>({
+const testinomialSchema=new mongoose.Schema<testinomialInterface>({
     name:{
         type:String,
         required:[true,validateTestinomialMessage.REQUIRED_NAME_MESSAGE],
@@ -27,7 +27,7 @@ const testinomialSchema=new mongoose.Schema<testiInput>({
 
 export type Testinomial=InferSchemaType<typeof testinomialSchema>
 
-const TestinomialModel=mongoose.model<testiDocument>("Testinomials",testinomialSchema)
+const TestinomialModel=mongoose.model<testinomialInterface>("Testinomials",testinomialSchema)
 
 
 

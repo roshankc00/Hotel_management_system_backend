@@ -4,6 +4,8 @@ import { roomZodMessages } from "../utils/zoderrormessages";
 import { Room } from "../models/roommodel";
 import { Food } from "../models/foodModel";
 import { Response } from "express";
+import { image } from "./testinomial.interfaces";
+import { review } from "./foodInterface";
 export const validateCreateRoom=object({
     title:string({
         invalid_type_error:roomZodMessages.INVALID_TITLE_MESSAGE,
@@ -64,6 +66,21 @@ export const validateUpdateRoom=object({
 }).strict()
 
 
+
+
+
+export interface roomInterface extends Document {
+    title:string,
+    description:string,
+    discountPer:number,
+    priceAfterDiscount:number,
+    price:number,
+    category:string,
+    image:image,
+    review:review
+
+
+}
 
 export interface createRoomResponse {
     error?:any,

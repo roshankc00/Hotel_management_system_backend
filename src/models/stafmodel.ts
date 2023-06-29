@@ -1,10 +1,11 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import pkg  from 'validator'
 import { validateStafMessage } from "../constants/validateschemamessage";
+import { stafInterface } from "../interfaces/staf.interfaces";
 const {isEmail}=pkg
 
 
-const stafSchema=new mongoose.Schema({
+const stafSchema=new mongoose.Schema<stafInterface>({
     name:{
         type:String,
         required:[true,validateStafMessage.REQUIRED_name_MESSAGE],
@@ -53,7 +54,7 @@ const stafSchema=new mongoose.Schema({
 export type Staf=InferSchemaType<typeof stafSchema>
 
 
-const StafModel=mongoose.model("Staf",stafSchema)
+const StafModel=mongoose.model<stafInterface>("Staf",stafSchema)
 export default StafModel
 
 

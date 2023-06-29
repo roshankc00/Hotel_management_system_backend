@@ -6,6 +6,59 @@ import { filterResults } from '../middlewares/filter_sort_pagination'
 import RoomModel from '../models/roommodel'
 const router=express.Router()
 
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Room:
+ *       type: object
+ *       required:
+ *         -title
+ *         -desciption
+ *         -discountPer
+ *         -category
+ *         -image 
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: title of the room
+ *         price:
+ *           type: number 
+ *           description: price of the room
+ *         priceAfterDiscount:
+ *           type: number 
+ *           description: price after discount for the room
+ *         discountPer:
+ *           type: number 
+ *           description: discount percentage 
+ *         category:
+ *           type: string  
+ *           description: catgory of the room  
+ *         description:
+ *           type: string  
+ *           description: discount of the room  
+ *         image:
+ *           type: object
+ *           description: includes the url and the public id 
+ *       example:
+ *         title: the best room
+ *         price: 10000
+ *         discountPer: 10
+ *         priceAfterDisount: 2300
+ *         desciption: the best room to stay  
+ *         category: 1-star-room
+ *         review: object of the rating number and the comment and the user info
+ *         image: the object of the image url and the public id 
+
+*/
+
+
+
+
+
+
+
+
 
 
 

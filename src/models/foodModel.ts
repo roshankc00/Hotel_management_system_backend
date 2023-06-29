@@ -2,8 +2,9 @@ import mongoose,{InferSchemaType} from "mongoose";
 import { validateFoodMessage, validateRoomMessage } from '../constants/validateschemamessage';
 import slugify from "slugify";
 import { NextFunction } from "express";
+import { foodInterface } from "../interfaces/foodInterface";
 
-const foodSchema=new mongoose.Schema({
+const foodSchema=new mongoose.Schema<foodInterface>({
     name:{
         type:String,
         required:[true,validateFoodMessage.REQUIRED_NAME_MESSAGE],

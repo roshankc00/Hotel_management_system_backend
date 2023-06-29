@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose ,{Document}from "mongoose"
 import { Staf } from "../models/stafmodel"
 import {number, object,string} from 'zod'
 import { ACHEIVEMENT_AND_POSITION_MESSAGE, stafZodmessage } from "../utils/zoderrormessages"
@@ -41,7 +41,17 @@ export const createStafInterfaceValid=object({
 })
 .strict()
 
+export interface stafInterface extends Document {
+    name:string,
+    address:string,
+    position:string,
+    acheiveaments:string,
+    salary:number,
+    email:any,
+    age:number,
+    phoneNumber:number
 
+}
 
 
 

@@ -3,6 +3,48 @@ import { createBlog, deleteBlog, getAllBlog, getSingleBlog, updateBlog } from '.
 import upload from '../middlewares/multer';
 const router=express.Router()
 
+ /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Blog:
+ *       type: object
+ *       required:
+ *         -tag
+ *         -description
+ *         -title
+ *       properties:
+ *         tag:
+ *           type: string
+ *           description: tag for the vlog
+ *         title:
+ *           type: string
+ *           description: title of the vlog
+ *         description:
+ *           type: string
+ *           description: description for the vlog 
+ *         image:
+ *           type: object
+ *           description: includes the url and the public id 
+ *       example:
+ *         tag: day 1
+ *         title: the memorable day
+ *         description: great day with lots of achevement
+ *         image: the object of the image url and the public id 
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @swagger

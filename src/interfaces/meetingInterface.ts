@@ -1,6 +1,7 @@
 import { object, string } from "zod";
 import { meetingZodMessage } from "../utils/zoderrormessages";
 import { Meeting } from "../models/meetingmodel";
+import { image } from "./testinomial.interfaces";
 
 export const validateCreateMeeting=object({
     title:string({
@@ -40,6 +41,20 @@ export const validateUpdateMeeting=object({
     }).optional()
 })
 .strict()
+
+
+
+
+
+
+
+export interface meetingInterface extends Document {
+    title:string,
+    description:string,
+    venue:string
+
+}
+
 
 
 

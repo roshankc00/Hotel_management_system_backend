@@ -1,6 +1,7 @@
 import mongoose, { InferSchemaType } from "mongoose";
 import { validateRoomMessage } from "../constants/validateschemamessage";
-const roomSchema=new mongoose.Schema({
+import { roomInterface } from "../interfaces/roominterface";
+const roomSchema=new mongoose.Schema<roomInterface>({
     title:{
         type:String,
         required:[true,validateRoomMessage.REQUIRED_TITLE_MESSAGE],
