@@ -77,7 +77,7 @@ export interface roomInterface extends Document {
     price:number,
     category:string,
     image:image,
-    review:review
+    review:Array <review>
 
 
 }

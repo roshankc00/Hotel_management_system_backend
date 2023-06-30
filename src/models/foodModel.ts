@@ -71,5 +71,5 @@ foodSchema.pre(
 
 
 
-const FoodModel=mongoose.model('Food',foodSchema)
+const FoodModel=mongoose.model<foodInterface>('Food',foodSchema)
 export default FoodModel 

@@ -25,7 +25,8 @@ export const validateCreateFood= object({
 }).strict()
 
 
-interface review {
+
+export interface review {
     user:mongoose.Schema.Types.ObjectId,
     comment:string,
     rating:number
@@ -42,7 +43,7 @@ export interface foodInterface extends Document {
     priceAfterDiscount:number,
     slug:string,
     category:string,
-    review:review
+    review:Array <review>
     image:image
     
 

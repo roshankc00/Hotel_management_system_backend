@@ -66,5 +66,5 @@ export type Room =InferSchemaType <typeof roomSchema>
 
 
 
-const RoomModel=mongoose.model('Room',roomSchema)
+const RoomModel=mongoose.model<roomInterface>('Room',roomSchema)
 export default RoomModel 

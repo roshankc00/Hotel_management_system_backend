@@ -104,7 +104,7 @@ export interface CustomRequest extends Request {
     role:string,    
 }
 export interface UserDocument extends UserInput, mongoose.Document{
-    creaetedAt:Date,
+    createdAt:Date,
     updatedAt:Date,
     comparePassword(password:string):Promise<boolean>;
     generateToken():Promise<string>;

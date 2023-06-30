@@ -208,8 +208,8 @@ export const addReviewRoom=asyncHandler(async(req:CustomRequest,res:Response<add
         if(!room){
             throw new Error("the food doesnt exists")
         }
-        // const destroy=await cloudinary.v2.uploader.destroy(room.image)
-        room.review.map(async(el,ind)=>{
+        const destroy=await cloudinary.v2.uploader.destroy(room.image.public_id)
+        room.review.map(async(el:any,ind:number)=>{
             if(el.user.toString()===req.user._id.toString()){
                 room.review.splice(ind,1)
                 alreadyReviewed=true

@@ -1,12 +1,12 @@
 import mongoose,{InferSchemaType} from "mongoose";
 import { validateBlogMessage } from "../constants/validateschemamessage";
-import { blogDocument, blogInput } from "../interfaces/blog.interfaces";
+import { blogDocument, blogInput, BlogInterface } from '../interfaces/blog.interfaces';
 
 
 
 
 
-const blogSchema=new mongoose.Schema<blogInput>({
+const blogSchema=new mongoose.Schema<BlogInterface>({
     tag:{
         type:String,
         required:true,
@@ -35,5 +35,5 @@ const blogSchema=new mongoose.Schema<blogInput>({
 export type Blog=InferSchemaType<typeof blogSchema>
 export type Blogs=Array<Blog>
 
-const BlogModel=mongoose.model<blogDocument>('Blog',blogSchema)
+const BlogModel=mongoose.model<BlogInterface>('Blog',blogSchema)
 export default BlogModel

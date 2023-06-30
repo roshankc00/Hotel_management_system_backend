@@ -45,7 +45,7 @@ export interface stafInterface extends Document {
     name:string,
     address:string,
     position:string,
-    acheiveaments:string,
+    acheiveaments:Array <string>,
     salary:number,
     email:any,
     age:number,

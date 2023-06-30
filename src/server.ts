@@ -32,11 +32,11 @@ connectDb()
 
 // all the middlewares
 app.use(express.json())
-// app.use(morgan('dev'))
-// app.use(helmet())
-// app.use(mongoSanitize())
-// app.use(hpp())
-// app.use(cors())
+app.use(morgan('dev'))
+app.use(helmet())
+app.use(mongoSanitize())
+app.use(hpp())
+app.use(cors())
 
 // all the routes
 app.use('/api/v1',blogRoute)
