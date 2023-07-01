@@ -33,14 +33,15 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
             password,
             name
            })
-           const data:tokendata={
-            id:user._id
+           const data={
+            email:user.email
            }
            const token=jwt.sign(data,env.SECRET)
          
            res.status(200).json({
             sucess:true,
-            token
+            token,
+            message:"User created Sucessfully"
            })
         }
        
@@ -58,7 +59,7 @@ export const registerUser:RequestHandler=asyncHandler(async(req:Request<any,any,
 
 // login the user 
 
-export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response<userres>)=>{
+export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Response)=>{
     try {
         const {email,password}=req.body
         // validating the incomming req.body type 
@@ -83,14 +84,18 @@ export const loginUser=asyncHandler(async(req:Request<any,any,loginuser>,res:Res
             throw new Error("enter the valid password")
         }
 
-        const data:tokendata={
-            id:existUser._id
+        const data={
+            email:existUser.email
            }
            const token=jwt.sign(data,env.SECRET)
          
            res.status(200).json({
             sucess:true,
-            token
+            data:{
+                token,
+                role:existUser.role
+            },
+            message:"user loged in sucessfully"
            })
 
     } catch (error:any) {

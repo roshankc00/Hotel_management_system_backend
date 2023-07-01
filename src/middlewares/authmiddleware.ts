@@ -16,9 +16,8 @@ export const checkAuth=asyncHandler(async(req:CustomRequest,res:Response,next:Ne
         }
         let token=req.headers.authorization.split(' ')[1]
         let decoded:any=jwt.verify(token,process.env.SECRET)
-        const id:string=decoded.id
-        validateMongodbId(id)
-        const user=await UserModel.findById(id)
+        const email:string=decoded.email
+        const user=await UserModel.findOne({email})
         req.user=user
         next()   
     } catch (error:any) {

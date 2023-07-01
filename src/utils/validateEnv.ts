@@ -10,6 +10,9 @@ export default  cleanEnv(process.env, {
     CLOUDINARY_CLIENT_API:str(),
     CLOUDINARY_CLIENT_SECRET:str(),
     SERVER_URL:str(),
+    GOOGLE_CLIENT_SECRET:str(),
+    CLIENT_URL:str(),
+    GOOGLE_CLIENT_ID:str(),
 });
 
 

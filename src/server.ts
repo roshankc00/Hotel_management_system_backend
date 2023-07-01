@@ -14,10 +14,13 @@ import testinomialRoute from './routes/testinomiaRoute'
 import roomRoute from './routes/roomRoute'
 import userRoute from './routes/userRoute'
 import foodRoute from './routes/foodRoute'
+import authRoute from './routes/auth'
 import MeetRoute from './routes/meetingRoute'
 import SwaggerRoute from './routes/swaggerRoute'
 import morgan from 'morgan'
-
+import passport from "passport";
+import expressSession from "express-session";
+import { passportInitialize } from './middlewares/passport_middleware'
 
 
 // rest variables
@@ -27,12 +30,24 @@ const PORT=env.PORT
 // connecting to the database
 connectDb()
 
-// configuring the cloudinary 
+
+// session
+app.use(expressSession({ 
+    secret: "test123#",
+    resave: true,
+    saveUninitialized: true,
+    cookie:{secure:true}
+
+  })
+);
 
 
 // all the middlewares
 app.use(express.json())
 app.use(morgan('dev'))
+passportInitialize();
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(helmet())
 app.use(mongoSanitize())
 app.use(hpp())
@@ -46,6 +61,7 @@ app.use('/api/v1',userRoute)
 app.use('/api/v1',foodRoute)
 app.use('/api/v1',roomRoute)
 app.use('/api/v1',MeetRoute)
+app.use('/auth',authRoute)
 app.use('/swagger',SwaggerRoute)
 app.use(notFound)
 app.use(errorHandler)

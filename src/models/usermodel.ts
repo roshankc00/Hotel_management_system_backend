@@ -9,7 +9,6 @@ import crypto from 'crypto'
 const userSchema=new mongoose.Schema<UserInput>({
     name:{
         type:String,
-        required:[true,validateUserModel.REQUIRED_NAME_MESSAGE],
         min:[3,"enter the valid name"]
     },
     email:{
@@ -23,7 +22,6 @@ const userSchema=new mongoose.Schema<UserInput>({
     },
     password:{
         type:String,
-        required:[true,validateUserModel.REQUIRED_PASSWORD_MESSAGE],
         match:[
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             validateUserModel.VALID_PASSWORD_MESSAGE

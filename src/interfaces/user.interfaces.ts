@@ -95,7 +95,7 @@ export const updatePasswordValid=object({
 
 
 export interface CustomRequest extends Request {
-    user?:UserDocument; 
+    user?:any; 
   }
   export interface UserInput {
     email:string,
@@ -130,7 +130,8 @@ export interface loginuser {
 export interface userres{
     sucess?:boolean,
     token?:string,
-    error?:any
+    error?:any,
+    message?:string,
 }
 
 export interface resResetPassword {
